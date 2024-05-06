@@ -1,11 +1,13 @@
 import React from "react";
-
+import IconPositionTabs from "./Tabs";
 function Dashboard()
 {
     return(
-        <h1 className="dashboard">
-            Dashboard
-        </h1>
+        <div className="dashboard">
+<IconPositionTabs></IconPositionTabs>
+        </div>
+            
+        
     )
 }
 export default Dashboard;

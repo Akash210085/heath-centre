@@ -3,6 +3,8 @@ import AddIcon from "@mui/icons-material/Add";
 import Zoom from '@mui/material/Zoom';
 import Fab from '@mui/material/Fab';
 
+import BasicGrid from "./Muigrid";
+
 
 function Form(props)
 {
@@ -39,23 +41,19 @@ function Form(props)
     return (
         <div>
       <form className="create-note">
-        {isExpanded && (
-          <input
-            name="title"
-            onChange={handleChange}
-            value={note.title}
-            placeholder="Title"
-          />
-        )}
 
-        <textarea
+        {/* <textarea
           name="content"
           onClick={expand}
           onChange={handleChange}
           value={note.content}
-          placeholder="Start A New Appointment..."
+          placeholder="Lodge A New Appointment..."
           rows={isExpanded ? 3 : 1}
-        />
+        /> */}
+        <BasicGrid onClick={expand}
+          onChange={handleChange} isExpanded={isExpanded}/>
+       
+        
         <Zoom in={isExpanded}>
           <Fab onClick={submitNote}>
             <AddIcon />

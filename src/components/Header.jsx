@@ -1,5 +1,5 @@
 import React from "react";
-import HeaderButton from "./HeaderButton";
+
 function Header()
 {
     return (
@@ -14,8 +14,6 @@ function Header()
             <p>
             Indian Institute of Technology, Kanpur
             </p>
-           
-            <HeaderButton />
         </header>
     )
 }

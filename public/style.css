@@ -39,8 +39,9 @@ body {
   }
 
   .dashboard{
-    text-align: center;
-    margin-top: 10px;
+    
+    position: relative;
+    left: 500px;
   }
 
   footer {
@@ -57,7 +58,7 @@ body {
 
   form.create-note {
     position: relative;
-    width: 480px;
+    width: 650px;
     margin: 30px auto 20px auto;
     background: #fff;
     padding: 15px;
@@ -88,3 +89,5 @@ body {
     cursor: pointer;
     outline: none;
   }
+
+ 
