@@ -14,12 +14,16 @@ const theme = createTheme({
   },
 });
 function Signbutton(props) {
+  function handleClick() {
+    props.onClickSignIn();
+    props.handleSubmit();
+  }
   return (
     <ThemeProvider theme={theme}>
       <LoadingButton
         // loading={props.isSignIn}
         variant="contained"
-        onClick={props.isRegister ? props.onClickSignIn : props.onClickSignUp}
+        onClick={props.isRegister ? handleClick : props.onClickSignUp}
         color="new"
       >
         {props.buttonText}

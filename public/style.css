@@ -109,6 +109,10 @@ form.create-note button {
   text-decoration: none;
 }
 
+.contact {
+  width: 500px;
+  margin: 20px auto 0;
+}
 .contact-card {
   padding: 50px 20px;
 }
@@ -122,4 +126,22 @@ form.create-note button {
 
 .contact-card span {
   font-weight: 300;
+}
+
+.profile {
+  text-align: center;
+  width: 800px;
+  margin: 20px auto 0;
+  padding: 20px 20px;
+}
+.customClass
+  .MuiOutlinedInput-root.Mui-focused
+  .MuiOutlinedInput-notchedOutline {
+  border-color: cadetblue;
+}
+.customClass .MuiInputLabel-root.Mui-focused {
+  color: cadetblue;
+}
+.customClass .MuiFormHelperText-root {
+  color: red;
 }
