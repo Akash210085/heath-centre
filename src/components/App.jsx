@@ -12,10 +12,20 @@ function App() {
   const [isDashboard, SetIsDashboard] = useState(false);
   const [isProfile, SetIsProfile] = useState(false);
   const [isContacts, SetIsContacts] = useState(false);
-  const [isRegister] = useState(true);
+  const [isRegister, SetIsRegister] = useState(false);
   function onClickSignIn() {
+    // console.log(isSignIn);
     SetIsSignIn(true);
     SetIsDashboard(true);
+    // console.log(isSignIn);
+  }
+  function onClickSignUp() {
+    // console.log(isRegister);
+    SetIsRegister(true);
+  }
+
+  function onClickLink() {
+    SetIsRegister(false);
   }
   //   background: #eee;
   //   background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
@@ -47,13 +57,21 @@ function App() {
           </div>
         ) : (
           <SignIn
-            className="signIn"
             onClickSignIn={onClickSignIn}
             isSignIn={isSignIn}
+            onClickSignUp={onClickSignUp}
+            isRegister={isRegister}
+            onClickLink={onClickLink}
           />
         )
       ) : (
-        <SignUp />
+        <SignUp
+          onClickSignUp={onClickSignUp}
+          isRegister={isRegister}
+          onClickSignIn={onClickSignIn}
+          isSignIn={isSignIn}
+          onClickLink={onClickLink}
+        />
       )}
     </div>
   );

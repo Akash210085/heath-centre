@@ -11,21 +11,8 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-const { palette } = createTheme();
-const { augmentColor } = palette;
-const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
-const theme = createTheme({
-  palette: {
-    anger: createColor("#F40B27"),
-    apple: createColor("#5DBA40"),
-    steelBlue: createColor("#5C76B7"),
-    violet: createColor("#BC00A3"),
-    new: createColor("#5f9eA0"),
-  },
-});
+import Signbutton from "./Signbutton";
 
 function Signform(props) {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -63,20 +50,21 @@ function Signform(props) {
             label="Password"
           />
         </FormControl>
-        <ThemeProvider theme={theme}>
-          <LoadingButton
-            loading={props.isSignIn}
-            variant="contained"
-            onClick={props.onClickSignIn}
-            color="new"
-          >
-            Sign In
-          </LoadingButton>
-        </ThemeProvider>
-
-        <p>
-          Don't have an account?<a href="http://localhost:3000/">Sign Up</a>
-        </p>
+        <Signbutton
+          onClickSignIn={props.onClickSignIn}
+          isSignIn={props.isSignIn}
+          isRegister={props.isRegister}
+          onClickSignUp={props.onClickSignUp}
+          buttonText={props.buttonText}
+        />
+        {props.isRegister && (
+          <p>
+            Don't have an account?
+            <a onClick={props.onClickLink} href="#Sign up">
+              Sign Up
+            </a>
+          </p>
+        )}
       </Stack>
     </div>
   );
