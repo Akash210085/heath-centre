@@ -37,6 +37,8 @@ function App() {
     document.body.style.padding = "0 16px";
   } else {
     document.body.style.padding = "0 32px";
+    document.body.style.backgroundImage = "none";
+    document.body.style.background = "#fff";
   }
   return (
     <div>
