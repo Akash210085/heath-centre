@@ -22,6 +22,7 @@ function Signbutton(props) {
     <ThemeProvider theme={theme}>
       <LoadingButton
         // loading={props.isSignIn}
+        disabled={props.isDisabled}
         variant="contained"
         onClick={props.isRegister ? handleClick : props.onClickSignUp}
         color="new"

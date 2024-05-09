@@ -49,7 +49,7 @@ function Signform(props) {
   function onChangePassword(event) {
     const newPassword = event.target.value;
     SetPassword(newPassword);
-    if (!password || newPassword.length < 5 || newPassword.length > 20) {
+    if (!newPassword || newPassword.length < 5 || newPassword.length > 20) {
       SetPasswordError(true);
       SetPasswordHelperText("Password should be of length between 5 and 20");
     } else {
@@ -114,6 +114,9 @@ function Signform(props) {
           onClickSignUp={props.onClickSignUp}
           buttonText={props.buttonText}
           handleSubmit={handleSubmit}
+          isDisabled={
+            emailError || passwordError || email === "" || password === ""
+          }
         />
         {props.isRegister && (
           <p>
