@@ -1,5 +1,5 @@
 import React from "react";
-
+import Signupform from "../Signup/Signupform";
 import Signform from "./Signform";
 function Main(props) {
   return (
@@ -11,14 +11,17 @@ function Main(props) {
         <h3>Welcome {props.welcomeText}</h3>
         <h3>{props.welcomeHeading}</h3>
         <p>Health Centre IIT Kanpur</p>
-        <Signform
-          onClickSignIn={props.onClickSignIn}
-          isSignIn={props.isSignIn}
-          isRegister={props.isRegister}
-          onClickSignUp={props.onClickSignUp}
-          buttonText={props.welcomeHeading}
-          onClickLink={props.onClickLink}
-        />
+        {!props.isRegister && <Signupform />}
+        {props.isRegister && (
+          <Signform
+            onClickSignIn={props.onClickSignIn}
+            isSignIn={props.isSignIn}
+            isRegister={props.isRegister}
+            onClickSignUp={props.onClickSignUp}
+            buttonText={props.welcomeHeading}
+            onClickLink={props.onClickLink}
+          />
+        )}
       </div>
     </div>
   );

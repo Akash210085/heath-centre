@@ -142,6 +142,15 @@ form.create-note button {
 .customClass .MuiInputLabel-root.Mui-focused {
   color: cadetblue;
 }
-.customClass .MuiFormHelperText-root {
-  color: red;
+
+.customClass .MuiButtonBase-root.Mui-selected {
+  color: cadetblue;
+}
+
+.signup-tabs {
+  margin-top: 20px;
+}
+
+.signupform {
+  margin: 20px 0;
 }
