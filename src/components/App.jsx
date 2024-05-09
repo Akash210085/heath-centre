@@ -12,7 +12,7 @@ function App() {
   const [isDashboard, SetIsDashboard] = useState(false);
   const [isProfile, SetIsProfile] = useState(false);
   const [isContacts, SetIsContacts] = useState(false);
-  const [isRegister, SetIsRegister] = useState(true);
+  const [isRegister, SetIsRegister] = useState(false);
   function onClickSignIn() {
     // console.log(isSignIn);
     SetIsSignIn(true);
