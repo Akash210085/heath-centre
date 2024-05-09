@@ -24,6 +24,11 @@ function Signupform() {
             backgroundColor: "cadetblue",
           },
         }}
+        sx={{
+          ".Mui-selected": {
+            color: "#5f9ea0",
+          },
+        }}
       >
         <Tab
           label="Students"
