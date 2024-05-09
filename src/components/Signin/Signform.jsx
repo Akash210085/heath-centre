@@ -30,14 +30,15 @@ function Signform(props) {
   const [passwordError, SetPasswordError] = useState(false);
   const [emailHelperText, SetEmailHelperText] = useState("");
   const [passwordHelperText, SetPasswordHelperText] = useState("");
-  const isEmail = (email) => /^[A-Z0-9._%+-]+@iitk.ac.i$/i.test(email);
+  const isEmail = (email) => /^[A-Z0-9._%+-]+@iitk.ac.in$/i.test(email);
 
   function handleSubmit() {}
 
   function onChangeEmail(event) {
-    SetEmail(event.target.value);
+    const newEmail = event.target.value;
+    SetEmail(newEmail);
 
-    if (!isEmail(email)) {
+    if (!isEmail(newEmail)) {
       SetEmailError(true);
       SetEmailHelperText("Invalid Email ID");
     } else {
@@ -46,8 +47,9 @@ function Signform(props) {
     }
   }
   function onChangePassword(event) {
-    SetPassword(event.target.value);
-    if (!password || password.length < 5 || password.length > 20) {
+    const newPassword = event.target.value;
+    SetPassword(newPassword);
+    if (!password || newPassword.length < 5 || newPassword.length > 20) {
       SetPasswordError(true);
       SetPasswordHelperText("Password should be of length between 5 and 20");
     } else {
