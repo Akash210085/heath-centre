@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/heath-centre/static/css/main.598b32e0.css",
-    "main.js": "/heath-centre/static/js/main.b6bab9e7.js",
+    "main.css": "/heath-centre/static/css/main.d765dbe6.css",
+    "main.js": "/heath-centre/static/js/main.82d8e665.js",
     "static/media/login2.gif": "/heath-centre/static/media/login2.df2b04b01a18d60cea68.gif",
     "static/media/Signup3.gif": "/heath-centre/static/media/Signup3.a70ab7de36678be08295.gif",
     "index.html": "/heath-centre/index.html",
-    "main.598b32e0.css.map": "/heath-centre/static/css/main.598b32e0.css.map",
-    "main.b6bab9e7.js.map": "/heath-centre/static/js/main.b6bab9e7.js.map"
+    "main.d765dbe6.css.map": "/heath-centre/static/css/main.d765dbe6.css.map",
+    "main.82d8e665.js.map": "/heath-centre/static/js/main.82d8e665.js.map"
   },
   "entrypoints": [
-    "static/css/main.598b32e0.css",
-    "static/js/main.b6bab9e7.js"
+    "static/css/main.d765dbe6.css",
+    "static/js/main.82d8e665.js"
   ]
 }
