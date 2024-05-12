@@ -28,7 +28,8 @@ header p {
 }
 
 footer {
-  position: absolute;
+  display: flex;
+  justify-content: center;
   text-align: center;
   bottom: 0;
   width: 100%;

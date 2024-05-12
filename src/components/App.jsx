@@ -8,11 +8,11 @@ import Contacts from "./Contacts";
 import SignUp from "./Signup/SignUp";
 import DashboardContainer from "./Dashboard/DashboardContainer";
 function App() {
-  const [isSignIn, SetIsSignIn] = useState(true);
-  const [isDashboard, SetIsDashboard] = useState(true);
+  const [isSignIn, SetIsSignIn] = useState(false);
+  const [isDashboard, SetIsDashboard] = useState(false);
   const [isProfile, SetIsProfile] = useState(false);
   const [isContacts, SetIsContacts] = useState(false);
-  const [isRegister, SetIsRegister] = useState(true);
+  const [isRegister, SetIsRegister] = useState(false);
   function onClickSignIn() {
     // console.log(isSignIn);
     SetIsSignIn(true);
