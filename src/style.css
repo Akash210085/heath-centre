@@ -154,3 +154,9 @@ form.create-note button {
 .signupform {
   margin: 20px 0;
 }
+
+.data {
+  height: 380px;
+  width: 90%;
+  margin: 50px auto;
+}

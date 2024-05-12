@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import Form from "./Form";
 import Dashboard from "./Dashboard";
 import SignIn from "./Signin/SignIn";
 import Profile from "./Profile";
 import Contacts from "./Contacts";
 import SignUp from "./Signup/SignUp";
+import DashboardContainer from "./Dashboard/DashboardContainer";
 function App() {
-  const [isSignIn, SetIsSignIn] = useState(false);
-  const [isDashboard, SetIsDashboard] = useState(false);
+  const [isSignIn, SetIsSignIn] = useState(true);
+  const [isDashboard, SetIsDashboard] = useState(true);
   const [isProfile, SetIsProfile] = useState(false);
   const [isContacts, SetIsContacts] = useState(false);
-  const [isRegister, SetIsRegister] = useState(false);
+  const [isRegister, SetIsRegister] = useState(true);
   function onClickSignIn() {
     // console.log(isSignIn);
     SetIsSignIn(true);
@@ -52,7 +52,7 @@ function App() {
               SetIsDashboard={SetIsDashboard}
               SetIsProfile={SetIsProfile}
             />
-            {isDashboard && <Form />}
+            {isDashboard && <DashboardContainer />}
             {isProfile && <Profile />}
             {isContacts && <Contacts />}
             <Footer />
