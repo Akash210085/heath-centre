@@ -1,8 +1,9 @@
 import React from "react";
-import Signform from "./Signform";
+import SignInform from "./SignInform";
+import Signupform from "../Signup/Signupform";
 function Main(props) {
   return (
-    <div class="flex-container">
+    <div className="flex-container">
       <div className="gif">
         <img src={props.logo} alt="loading..." />
       </div>
@@ -10,14 +11,18 @@ function Main(props) {
         <h3>Welcome {props.welcomeText}</h3>
         <h3>{props.welcomeHeading}</h3>
         <p>Health Centre IIT Kanpur</p>
-        <Signform
-          onClickSignIn={props.onClickSignIn}
-          isSignIn={props.isSignIn}
-          isRegister={props.isRegister}
-          onClickSignUp={props.onClickSignUp}
-          buttonText={props.welcomeHeading}
-          onClickLink={props.onClickLink}
-        />
+        {props.isRegister ? (
+          <SignInform
+            onClickSignIn={props.onClickSignIn}
+            isSignIn={props.isSignIn}
+            isRegister={props.isRegister}
+            onClickSignUp={props.onClickSignUp}
+            buttonText={props.welcomeHeading}
+            onClickLink={props.onClickLink}
+          />
+        ) : (
+          <Signupform onClickSignUp={props.onClickSignUp} />
+        )}
       </div>
     </div>
   );

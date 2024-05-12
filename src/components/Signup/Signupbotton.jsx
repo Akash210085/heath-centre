@@ -19,9 +19,24 @@ function Signupbutton(props) {
     <ThemeProvider theme={theme}>
       <LoadingButton
         // loading={props.isSignIn}
-        disabled={props.isDisabled}
+        disabled={
+          (props.isStudent &&
+            (props.student.name === "" ||
+              props.student.rollNo === "" ||
+              props.student.iitkEmailId === "")) ||
+          (props.isDoctor &&
+            (props.doctor.name === "" ||
+              props.doctor.designation === "" ||
+              props.doctor.email === "" ||
+              props.doctor.contactNo === "")) ||
+          (props.isStaff &&
+            (props.staff.name === "" ||
+              props.staff.designation === "" ||
+              props.staff.email === "" ||
+              props.staff.contactNo === ""))
+        }
+        onClick={props.onClickSignUp}
         variant="contained"
-        // onClick={props.isRegister ? handleClick : props.onClickSignUp}
         color="new"
       >
         {/* {props.buttonText} */}

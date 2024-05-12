@@ -13,9 +13,9 @@ import TextField from "@mui/material/TextField";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-import Signbutton from "./Signbutton";
+import SignInbutton from "./SignInbutton";
 
-function Signform(props) {
+function SignInform(props) {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -107,7 +107,7 @@ function Signform(props) {
             {passwordHelperText}
           </FormHelperText>
         </FormControl>
-        <Signbutton
+        <SignInbutton
           onClickSignIn={props.onClickSignIn}
           isSignIn={props.isSignIn}
           isRegister={props.isRegister}
@@ -131,4 +131,4 @@ function Signform(props) {
   );
 }
 
-export default Signform;
+export default SignInform;

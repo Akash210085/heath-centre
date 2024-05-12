@@ -1,165 +1,343 @@
 import React, { useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Signupbutton from "./Signupbotton";
-function Signupform() {
-  const [value, setValue] = useState("");
-  const [isstudent, SetIsStudent] = useState(true);
-  const [isdoctor, SetIsDoctor] = useState(false);
-  const [isstaff, SetIsStaff] = useState(false);
-  const [name, SetName] = useState("");
-  const [rollNo, SetRollNo] = useState("");
-  const [iitkEmail, SetIITKEmail] = useState("");
-  const [designation, SetDesignation] = useState("");
-  const [email, SetEmail] = useState("");
-  const [contact, SetContact] = useState("");
-  const [nameError, SetNameError] = useState(false);
-  const [rollNoError, SetRollNoError] = useState(false);
-  const [iitkEmailError, SetIITKEmailError] = useState(false);
-  const [designationError, SetDesignationError] = useState(false);
-  const [emailError, SetEmailError] = useState(false);
-  const [contactError, SetContactError] = useState(false);
-  const isEmail = (email) => /^[A-Z0-9._%+-]+@iitk.ac.in$/i.test(email);
-  //   const [isDisabled, SetIsDisabled] = useState(true);
-  const [iitkEmailHelperText, SetIITKEmailHelperText] = useState("");
+function Signupform(props) {
+  const [value, setValue] = useState("one");
+  const [isStudent, SetIsStudent] = useState(true);
+  const [isDoctor, SetIsDosctor] = useState(false);
+  const [isStaff, SetIsStaff] = useState(false);
+  const [student, SetStudent] = useState({
+    name: "",
+    rollNo: "",
+    iitkEmailId: "",
+  });
+
+  const [doctor, SetDoctor] = useState({
+    name: "",
+    designation: "",
+    email: "",
+    contactNo: "",
+  });
+
+  const [staff, SetStaff] = useState({
+    name: "",
+    designation: "",
+    email: "",
+    contactNo: "",
+  });
 
   const handleChange = (event, newValue) => {
-    console.log(event.target);
     setValue(newValue);
   };
-
-  function handleClickSignup() {
-    name === "" ? SetNameError(true) : SetNameError(false);
-    rollNo === "" ? SetRollNoError(true) : SetRollNoError(false);
-    iitkEmail === "" ? SetEmailError(true) : SetEmailError(false);
-    designation === "" ? SetDesignationError(true) : SetDesignationError(false);
-    email === "" ? SetEmailError(true) : SetEmailError(false);
-    contact === "" ? SetContactError(true) : SetContactError(false);
-  }
-
-  function onChangeIITKEmail(event) {
-    const newEmail = event.target.value;
-    SetIITKEmail(newEmail);
-
-    if (!isEmail(newEmail)) {
-      SetIITKEmailError(true);
-      SetIITKEmailHelperText("Invalid Email ID");
-    } else {
-      SetIITKEmailError(false);
-      SetIITKEmailHelperText("");
-    }
-  }
-
   return (
     <div>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        className="signup-tabs"
-        TabIndicatorProps={{
-          style: {
-            backgroundColor: "cadetblue",
-          },
-        }}
-        sx={{
-          ".Mui-selected": {
-            color: "#5f9ea0",
-          },
-        }}
-      >
-        <Tab
-          label="Students"
-          onClick={() => {
-            SetIsStudent(true);
-            SetIsDoctor(false);
-            SetIsStaff(false);
-          }}
-        />
-
-        <Tab
-          label="Doctors"
-          onClick={() => {
-            SetIsDoctor(true);
-            SetIsStaff(false);
-            SetIsStudent(false);
-          }}
-        />
-        <Tab
-          label="Staff"
-          onClick={() => {
-            SetIsStaff(true);
-            SetIsDoctor(false);
-            SetIsStudent(false);
-          }}
-        />
-      </Tabs>
+      <Box sx={{ width: "100%" }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="secondary tabs example"
+        >
+          <Tab
+            value="one"
+            label="Students"
+            onClick={() => {
+              SetIsStudent(true);
+              SetIsDosctor(false);
+              SetIsStaff(false);
+              SetDoctor({
+                name: "",
+                designation: "",
+                email: "",
+                contactNo: "",
+              });
+              SetStaff({
+                name: "",
+                designation: "",
+                email: "",
+                contactNo: "",
+              });
+            }}
+          />
+          <Tab
+            value="two"
+            label="Doctors"
+            onClick={() => {
+              SetIsStudent(false);
+              SetIsDosctor(true);
+              SetIsStaff(false);
+              SetStaff({
+                name: "",
+                designation: "",
+                email: "",
+                contactNo: "",
+              });
+              SetStudent({
+                name: "",
+                rollNo: "",
+                iitkEmailId: "",
+              });
+            }}
+          />
+          <Tab
+            value="three"
+            label="Staff"
+            onClick={() => {
+              SetIsStudent(false);
+              SetIsDosctor(false);
+              SetIsStaff(true);
+              SetDoctor({
+                name: "",
+                designation: "",
+                email: "",
+                contactNo: "",
+              });
+              SetStudent({
+                name: "",
+                rollNo: "",
+                iitkEmailId: "",
+              });
+            }}
+          />
+        </Tabs>
+      </Box>
       <div className="signupform">
         <Stack spacing={3} sx={{ width: 300 }} className="customClass">
-          <TextField
-            label="Name"
-            variant="outlined"
-            onChange={(event) => {
-              SetName(event.target.value);
-            }}
-            error={nameError}
-          ></TextField>
-          {isstudent && (
+          {isStudent && (
+            <TextField
+              label="Name"
+              variant="outlined"
+              onChange={(event) => {
+                const newValue = event.target.value;
+                SetStudent((preValue) => {
+                  return {
+                    ...preValue,
+                    name: newValue,
+                  };
+                });
+                console.log(student);
+                console.log(doctor);
+                console.log(staff);
+              }}
+            ></TextField>
+          )}
+          {isDoctor && (
+            <TextField
+              label="Name"
+              variant="outlined"
+              onChange={(event) => {
+                const newValue = event.target.value;
+                SetDoctor((preValue) => {
+                  return {
+                    ...preValue,
+                    name: newValue,
+                  };
+                });
+                console.log(student);
+                console.log(doctor);
+                console.log(staff);
+              }}
+            ></TextField>
+          )}
+          {isStaff && (
+            <TextField
+              label="Name"
+              variant="outlined"
+              onChange={(event) => {
+                const newValue = event.target.value;
+                SetStaff((preValue) => {
+                  return {
+                    ...preValue,
+                    name: newValue,
+                  };
+                });
+                console.log(student);
+                console.log(doctor);
+                console.log(staff);
+              }}
+            ></TextField>
+          )}
+
+          {isStudent && (
             <TextField
               label="Roll No"
               variant="outlined"
               onChange={(event) => {
-                SetRollNo(event.target.value);
+                const newValue = event.target.value;
+                SetStudent((preValue) => {
+                  return {
+                    ...preValue,
+                    rollNo: newValue,
+                  };
+                });
+                console.log(student);
+                console.log(doctor);
+                console.log(staff);
               }}
-              error={rollNoError}
             ></TextField>
           )}
-          {isstudent && (
+          {isStudent && (
             <TextField
               label="IITK Email ID"
               variant="outlined"
-              onChange={onChangeIITKEmail}
-              error={iitkEmailError}
-              helperText={iitkEmailHelperText}
+              onChange={(event) => {
+                const newValue = event.target.value;
+                SetStudent((preValue) => {
+                  return {
+                    ...preValue,
+                    iitkEmailId: newValue,
+                  };
+                });
+                console.log(student);
+                console.log(doctor);
+                console.log(staff);
+              }}
             ></TextField>
           )}
-          {(isstaff || isdoctor) && (
+          {isDoctor && (
             <TextField
               label="Designation"
               variant="outlined"
               onChange={(event) => {
-                SetDesignation(event.target.value);
+                const newValue = event.target.value;
+                SetDoctor((preValue) => {
+                  return {
+                    ...preValue,
+                    designation: newValue,
+                  };
+                });
+                console.log(student);
+                console.log(doctor);
+                console.log(staff);
               }}
-              error={designationError}
             ></TextField>
           )}
-          {(isstaff || isdoctor) && (
+          {isStaff && (
+            <TextField
+              label="Designation"
+              variant="outlined"
+              onChange={(event) => {
+                const newValue = event.target.value;
+                SetStaff((preValue) => {
+                  return {
+                    ...preValue,
+                    designation: newValue,
+                  };
+                });
+                console.log(student);
+                console.log(doctor);
+                console.log(staff);
+              }}
+            ></TextField>
+          )}
+          {isDoctor && (
             <TextField
               label="Email ID"
               variant="outlined"
               onChange={(event) => {
-                SetEmail(event.target.value);
+                const newValue = event.target.value;
+                SetDoctor((preValue) => {
+                  return {
+                    ...preValue,
+                    email: newValue,
+                  };
+                });
+                console.log(student);
+                console.log(doctor);
+                console.log(staff);
               }}
-              error={emailError}
             ></TextField>
           )}
-          {(isstaff || isdoctor) && (
+          {isStaff && (
+            <TextField
+              label="Email ID"
+              variant="outlined"
+              onChange={(event) => {
+                const newValue = event.target.value;
+                SetStaff((preValue) => {
+                  return {
+                    ...preValue,
+                    email: newValue,
+                  };
+                });
+                console.log(student);
+                console.log(doctor);
+                console.log(staff);
+              }}
+            ></TextField>
+          )}
+          {isDoctor && (
             <TextField
               label="Contact No"
               variant="outlined"
               onChange={(event) => {
-                SetContact(event.target.value);
+                const newValue = event.target.value;
+                SetDoctor((preValue) => {
+                  return {
+                    ...preValue,
+                    contactNo: newValue,
+                  };
+                });
+                console.log(student);
+                console.log(doctor);
+                console.log(staff);
               }}
-              error={contactError}
             ></TextField>
           )}
-          <Signupbutton
-            onClick={handleClickSignup}
-            isDisabled={
-              emailError || name === "" || rollNo === "" || iitkEmail === ""
-            }
-          ></Signupbutton>
+          {isStaff && (
+            <TextField
+              label="Contact No"
+              variant="outlined"
+              onChange={(event) => {
+                const newValue = event.target.value;
+                SetStaff((preValue) => {
+                  return {
+                    ...preValue,
+                    contactNo: newValue,
+                  };
+                });
+                console.log(student);
+                console.log(doctor);
+                console.log(staff);
+              }}
+            ></TextField>
+          )}
+          {isStudent && (
+            <Signupbutton
+              isDoctor={isDoctor}
+              isStaff={isStaff}
+              isStudent={isStudent}
+              onClickSignUp={props.onClickSignUp}
+              student={student}
+              doctor={doctor}
+              staff={staff}
+            />
+          )}
+          {isDoctor && (
+            <Signupbutton
+              isDoctor={isDoctor}
+              isStaff={isStaff}
+              isStudent={isStudent}
+              onClickSignUp={props.onClickSignUp}
+              student={student}
+              doctor={doctor}
+              staff={staff}
+            />
+          )}
+          {isStaff && (
+            <Signupbutton
+              isDoctor={isDoctor}
+              isStaff={isStaff}
+              isStudent={isStudent}
+              onClickSignUp={props.onClickSignUp}
+              student={student}
+              doctor={doctor}
+              staff={staff}
+            />
+          )}
         </Stack>
       </div>
     </div>

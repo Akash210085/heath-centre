@@ -28,10 +28,11 @@ header p {
 }
 
 footer {
-  display: flex;
-  justify-content: center;
+  /* display: flex;
+  justify-content: center; */
   text-align: center;
-  bottom: 0;
+  position: relative;
+  margin-bottom: 0;
   width: 100%;
   height: 2.5rem;
 }
@@ -144,12 +145,6 @@ form.create-note button {
   color: cadetblue;
 }
 
-.customClass .MuiInput-root .MuiInput-underline::after {
-  border-bottom-color: "orange";
-  color: red;
-  background-color: red;
-}
-
 .signup-tabs {
   margin-top: 20px;
 }
@@ -165,6 +160,9 @@ form.create-note button {
 }
 
 .MuiTabs-root .MuiTabs-flexContainer .MuiTab-labelIcon.Mui-selected {
+  color: cadetblue;
+}
+.MuiTabs-root .MuiTabs-flexContainer .MuiButtonBase-root.Mui-selected {
   color: cadetblue;
 }
 
