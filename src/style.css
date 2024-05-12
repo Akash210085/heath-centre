@@ -144,8 +144,10 @@ form.create-note button {
   color: cadetblue;
 }
 
-.customClass .MuiButtonBase-root.Mui-selected {
-  color: cadetblue;
+.customClass .MuiInput-root .MuiInput-underline::after {
+  border-bottom-color: "orange";
+  color: red;
+  background-color: red;
 }
 
 .signup-tabs {
@@ -160,4 +162,12 @@ form.create-note button {
   height: 380px;
   width: 90%;
   margin: 50px auto;
+}
+
+.MuiTabs-root .MuiTabs-flexContainer .MuiTab-labelIcon.Mui-selected {
+  color: cadetblue;
+}
+
+.MuiTabs-root .MuiTabs-indicator {
+  background-color: cadetblue;
 }

@@ -92,14 +92,19 @@ function Form(props) {
     <div>
       <form className="create-note">
         <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={4}>
+          <Grid container spacing={4} className="customClass">
             <Grid item xs={6}>
               {isExpanded && (
                 <Autocomplete
+                  sx={{
+                    "& .MuiInput-underline:after": {
+                      borderBottomColor: "cadetblue",
+                    },
+                    width: 300,
+                  }}
                   disablePortal
                   id="combo-box-demo"
                   options={Allappoinment}
-                  sx={{ width: 300 }}
                   onChange={(event, value) => {
                     const newValue = value.label;
                     props.SetAppointment((preValue) => {
@@ -110,6 +115,7 @@ function Form(props) {
                     });
                     // console.log(props.appointment);
                   }}
+                  value={props.appointment.appointmentType}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -126,7 +132,12 @@ function Form(props) {
                   disablePortal
                   id="combo-box-demo"
                   options={Allcategory}
-                  sx={{ width: 300 }}
+                  sx={{
+                    "& .MuiInput-underline:after": {
+                      borderBottomColor: "cadetblue",
+                    },
+                    width: 300,
+                  }}
                   onChange={(event, value) => {
                     const newValue = value.label;
                     SetDoctors(Alldoctors[value.id]);
@@ -138,6 +149,7 @@ function Form(props) {
                     });
                     console.log(props.appointment);
                   }}
+                  value={props.appointment.category}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -154,7 +166,12 @@ function Form(props) {
                   disablePortal
                   id="combo-box-demo"
                   options={doctors}
-                  sx={{ width: 300 }}
+                  sx={{
+                    "& .MuiInput-underline:after": {
+                      borderBottomColor: "cadetblue",
+                    },
+                    width: 300,
+                  }}
                   onChange={(event, value) => {
                     const newValue = value.label;
                     SetSlots(Allslots[value.id]);
@@ -166,6 +183,7 @@ function Form(props) {
                     });
                     console.log(props.appointment);
                   }}
+                  value={props.appointment.doctorName}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -183,7 +201,12 @@ function Form(props) {
                   disablePortal
                   id="combo-box-demo"
                   options={slots}
-                  sx={{ width: 300 }}
+                  sx={{
+                    "& .MuiInput-underline:after": {
+                      borderBottomColor: "cadetblue",
+                    },
+                    width: 300,
+                  }}
                   onChange={(event, value) => {
                     const newValue = value.label;
                     props.SetAppointment((preValue) => {
@@ -193,6 +216,7 @@ function Form(props) {
                       };
                     });
                   }}
+                  value={props.appointment.preferredSlot}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -207,6 +231,11 @@ function Form(props) {
             <Grid item xs={12}>
               <TextField
                 fullWidth
+                sx={{
+                  "& .MuiInput-underline:after": {
+                    borderBottomColor: "cadetblue",
+                  },
+                }}
                 onClick={() => {
                   setIsExpanded(true);
                 }}
@@ -226,6 +255,7 @@ function Form(props) {
                     : "Lodge A New Appointment..."
                 }
                 variant="standard"
+                value={props.appointment.reasonForAppointment}
               />
             </Grid>
           </Grid>

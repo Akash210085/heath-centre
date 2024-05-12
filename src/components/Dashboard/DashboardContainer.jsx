@@ -21,8 +21,13 @@ function DashboardContainer() {
     SetAppointment((preValue) => {
       let { id } = preValue;
       return {
-        ...preValue,
         id: id + 1,
+        appointmentType: "",
+        category: "",
+        doctorName: "",
+        preferredSlot: "",
+        reasonForAppointment: "",
+        status: "Request Sent",
       };
     });
   }
