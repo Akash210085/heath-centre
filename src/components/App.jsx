@@ -7,12 +7,14 @@ import Profile from "./Profile";
 import Contacts from "./Contacts";
 import SignUp from "./Signup/SignUp";
 import DashboardContainer from "./Dashboard/DashboardContainer";
+import Chats from "./Chats";
 function App() {
   const [isSignIn, SetIsSignIn] = useState(false);
   const [isDashboard, SetIsDashboard] = useState(false);
   const [isProfile, SetIsProfile] = useState(false);
   const [isContacts, SetIsContacts] = useState(false);
   const [isRegister, SetIsRegister] = useState(false);
+  const [isChat, SetIsChat] = useState(false);
   function onClickSignIn() {
     // console.log(isSignIn);
     SetIsSignIn(true);
@@ -51,10 +53,12 @@ function App() {
               SetIsContacts={SetIsContacts}
               SetIsDashboard={SetIsDashboard}
               SetIsProfile={SetIsProfile}
+              SetIsChat={SetIsChat}
             />
             {isDashboard && <DashboardContainer />}
             {isProfile && <Profile />}
             {isContacts && <Contacts />}
+            {isChat && <Chats />}
             <Footer />
           </div>
         ) : (

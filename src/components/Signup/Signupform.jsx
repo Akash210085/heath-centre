@@ -33,6 +33,26 @@ function Signupform(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const [studentError, SetStudentError] = useState({
+    nameError: false,
+    rollNoError: false,
+    iitkEmailIdError: false,
+  });
+
+  const [doctorError, SetDoctorError] = useState({
+    nameError: false,
+    designationError: false,
+    emailError: false,
+    contactNoError: false,
+  });
+
+  const [staffError, SetStaffError] = useState({
+    nameError: false,
+    designationError: false,
+    emailError: false,
+    contactNoError: false,
+  });
   return (
     <div>
       <Box sx={{ width: "100%" }}>

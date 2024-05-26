@@ -8,6 +8,7 @@ function Dashboard(props) {
         SetIsContacts={props.SetIsContacts}
         SetIsDashboard={props.SetIsDashboard}
         SetIsProfile={props.SetIsProfile}
+        SetIsChat={props.SetIsChat}
       />
     </div>
   );
