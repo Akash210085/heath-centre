@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { Stack, TextField } from "@mui/material";
+import {
+  Stack,
+  FormControl,
+  OutlinedInput,
+  InputLabel,
+  InputAdornment,
+  FormHelperText,
+  IconButton,
+} from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -30,6 +40,16 @@ function ResetPasswordForm() {
     /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,20}$/i.test(
       password
     );
+
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   function onChangePassword(event) {
     const newPassword = event.target.value;
     if (!isValidPassword(newPassword)) {
@@ -92,28 +112,83 @@ function ResetPasswordForm() {
         }}
       >
         <Stack spacing={2} sx={{ width: 300 }}>
-          <TextField
-            id="outlined-basic"
-            label="New Password"
+          <FormControl
+            sx={{ m: 1, width: "25ch" }}
             variant="outlined"
             className="customClass"
-            onChange={onChangePassword}
-            value={password}
-            error={passwordError}
-            helperText={passwordHelperText}
-            name="email"
-          />
-          <TextField
-            id="outlined-basic"
-            label="Confirm New Password"
+          >
+            <InputLabel
+              htmlFor="outlined-adornment-password"
+              error={passwordError}
+            >
+              Password
+            </InputLabel>
+            <OutlinedInput
+              name="password"
+              onChange={onChangePassword}
+              value={password}
+              error={passwordError}
+              sx={{ width: 300 }}
+              id="outlined-adornment-password"
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+            <FormHelperText id="outlined-weight-helper-text">
+              {passwordHelperText}
+            </FormHelperText>
+          </FormControl>
+          <FormControl
+            sx={{ m: 1, width: "25ch" }}
             variant="outlined"
             className="customClass"
-            onChange={onChangeConfirmPassword}
-            value={confirmPassword}
-            error={confirmPasswordError}
-            helperText={confirmPasswordHelperText}
-            name="email"
-          />
+          >
+            <InputLabel
+              htmlFor="outlined-adornment-password"
+              error={confirmPasswordError}
+            >
+              Confirm Password
+            </InputLabel>
+            <OutlinedInput
+              name="passwordConfirm"
+              onChange={onChangeConfirmPassword}
+              value={confirmPassword}
+              error={confirmPasswordError}
+              sx={{ width: 300 }}
+              id="outlined-adornment-password"
+              type={showConfirmPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => {
+                      setShowConfirmPassword((preValue) => !preValue);
+                    }}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="confirm Password"
+            />
+            <FormHelperText id="outlined-weight-helper-text">
+              {confirmPasswordHelperText}
+            </FormHelperText>
+          </FormControl>
+
           <ThemeProvider theme={theme}>
             <LoadingButton
               disabled={
