@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Stack,
@@ -15,6 +15,7 @@ import "simplebar-react/dist/simplebar.min.css";
 import ChatConversation from "./ChatConversation";
 import ChatElement from "./ChatElement";
 function Chats() {
+  const [search, setSearch] = useState("");
   return (
     <Stack alignItems={"center"} justifyContent={"center"} height={500}>
       <Box
@@ -55,6 +56,9 @@ function Chats() {
                   id="standard-basic"
                   variant="standard"
                   placeholder="Search..."
+                  onChange={(event) => {
+                    setSearch(event.target.value);
+                  }}
                   sx={{
                     "& .MuiInputBase-root": {
                       height: 25,
@@ -75,8 +79,14 @@ function Chats() {
               <Stack direction={"column"} sx={{ flexGrow: 1, height: "79%" }}>
                 <SimpleBar style={{ maxHeight: "100%" }}>
                   <Stack spacing={2}>
-                    {ChatList.map((chat) => {
-                      return <ChatElement {...chat} />;
+                    {ChatList.filter((chat) => {
+                      return search.toLowerCase() === ""
+                        ? chat
+                        : chat.name
+                            .toLowerCase()
+                            .includes(search.toLowerCase());
+                    }).map((chat) => {
+                      return <ChatElement key={chat.id} {...chat} />;
                     })}
                   </Stack>
                 </SimpleBar>

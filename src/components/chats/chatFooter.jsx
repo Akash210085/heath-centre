@@ -57,6 +57,9 @@ const ChatInput = (props) => {
         onClick={() => {
           props.SetOpenPicker((preValue) => !preValue);
         }}
+        onBlur={() => {
+          props.SetOpenPicker((preValue) => !preValue);
+        }}
       >
         <Smiley />
       </IconButton>
@@ -83,6 +86,9 @@ const ChatInput = (props) => {
         </Stack>
         <IconButton
           onClick={() => {
+            SetOpenAction((preValue) => !preValue);
+          }}
+          onBlur={() => {
             SetOpenAction((preValue) => !preValue);
           }}
         >

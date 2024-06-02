@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Stack } from "@mui/material";
-import ChatHeader from "./chatHeader";
-import ChatFooter from "./chatFooter";
+import ChatHeader from "./chats/chatHeader";
+import ChatFooter from "./chats/chatFooter";
 import Message from "./Message";
 import SimpleBar from "simplebar-react";
 function ChatConversation() {

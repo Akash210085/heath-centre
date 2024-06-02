@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Box from "@mui/material/Box";
 import AddIcon from "@mui/icons-material/Add";
 import Zoom from "@mui/material/Zoom";
@@ -87,7 +87,7 @@ function Form(props) {
   const [doctors, SetDoctors] = useState([]);
   const [slots, SetSlots] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
-
+  const inputRef = useRef(null);
   return (
     <div>
       <form className="create-note">
@@ -121,6 +121,7 @@ function Form(props) {
                       {...params}
                       variant="standard"
                       label="Appoinment Type"
+                      ref={inputRef}
                     />
                   )}
                 />
@@ -238,6 +239,8 @@ function Form(props) {
                 }}
                 onClick={() => {
                   setIsExpanded(true);
+                  props.appointment.appointmentType === "" &&
+                    inputRef.current.focus();
                 }}
                 onChange={(event) => {
                   const newValue = event.target.value;

@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import Dashboard from "./Dashboard";
-import SignIn from "./Signin/SignIn";
+import SignIn from "../pages/auth/SignIn";
 import Profile from "./Profile";
 import Contacts from "./Contacts";
-import SignUp from "./Signup/SignUp";
+import SignUp from "../pages/auth/SignUp";
 import DashboardContainer from "./Dashboard/DashboardContainer";
 import Chats from "./Chats";
-function App() {
+function GeneralApp() {
   const [isSignIn, SetIsSignIn] = useState(false);
   const [isDashboard, SetIsDashboard] = useState(false);
   const [isProfile, SetIsProfile] = useState(false);
@@ -16,22 +16,17 @@ function App() {
   const [isRegister, SetIsRegister] = useState(false);
   const [isChat, SetIsChat] = useState(false);
   function onClickSignIn() {
-    // console.log(isSignIn);
     SetIsSignIn(true);
     SetIsDashboard(true);
-    // console.log(isSignIn);
   }
   function onClickSignUp() {
-    // console.log(isRegister);
     SetIsRegister(true);
   }
 
   function onClickLink() {
     SetIsRegister(false);
   }
-  //   background: #eee;
-  //   background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
-  //   padding: 0 16px;
+
   if (isSignIn) {
     document.body.style.background = "#eee";
     document.body.style.backgroundImage =
@@ -82,4 +77,4 @@ function App() {
     </div>
   );
 }
-export default App;
+export default GeneralApp;

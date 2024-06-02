@@ -144,6 +144,9 @@ form.create-note button {
 .customClass .MuiInputLabel-root.Mui-focused {
   color: cadetblue;
 }
+.customClass #outlined-weight-helper-text {
+  color: red;
+}
 
 .signup-tabs {
   margin-top: 20px;

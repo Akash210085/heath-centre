@@ -13,18 +13,14 @@ const theme = createTheme({
     new: createColor("#5f9eA0"),
   },
 });
-function Signbutton(props) {
-  function handleClick() {
-    props.onClickSignIn();
-    props.handleSubmit();
-  }
+
+function Authbutton(props) {
   return (
     <ThemeProvider theme={theme}>
       <LoadingButton
-        // loading={props.isSignIn}
         disabled={props.isDisabled}
+        onClick={props.handleSubmit}
         variant="contained"
-        onClick={props.isRegister ? handleClick : props.onClickSignUp}
         color="new"
       >
         {props.buttonText}
@@ -33,4 +29,4 @@ function Signbutton(props) {
   );
 }
 
-export default Signbutton;
+export default Authbutton;
