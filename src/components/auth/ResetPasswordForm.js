@@ -13,7 +13,8 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import CustomizedSnackbars from "./Snachbar";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
@@ -26,7 +27,7 @@ const theme = createTheme({
     new: createColor("#5f9eA0"),
   },
 });
-function ResetPasswordForm() {
+function ResetPasswordForm(props) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState(false);
@@ -34,8 +35,9 @@ function ResetPasswordForm() {
   const [passwordHelperText, setPasswordHelperText] = useState("");
   const [confirmPasswordHelperText, setConfirmpasswordHelperText] =
     useState("");
-  const [showSnachbar, setShowSnachbar] = useState(false);
-  const [snachbarData, setSnachbarData] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const isValidPassword = (password) =>
     /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,20}$/i.test(
       password
@@ -80,13 +82,18 @@ function ResetPasswordForm() {
   }
 
   function handleSubmit(e) {
+    const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get("token");
     e.preventDefault();
+    console.log(token);
+    console.log(confirmPassword);
     axios
       .post(
         "http://localhost:3001/auth/reset-password",
         {
           password,
           confirmPassword,
+          token,
         },
         {
           headers: {
@@ -96,11 +103,16 @@ function ResetPasswordForm() {
       )
       .then((response) => {
         console.log(response);
+        props.setSeverity(response.data.status);
+        props.setShowSnachbar(true);
+        props.setSnachbarData(response.data.message);
+        navigate("/auth/login");
       })
       .catch((err) => {
         console.log(err);
-        setShowSnachbar(true);
-        setSnachbarData(err.response.data.message);
+        props.setSeverity(err.response.data.status);
+        props.setShowSnachbar(true);
+        props.setSnachbarData(err.response.data.message);
       });
   }
 
@@ -204,11 +216,6 @@ function ResetPasswordForm() {
               Reset Password
             </LoadingButton>
           </ThemeProvider>
-          <CustomizedSnackbars
-            snachbarData={snachbarData}
-            showSnachbar={showSnachbar}
-            setShowSnachbar={setShowSnachbar}
-          />
         </Stack>
       </form>
     </div>

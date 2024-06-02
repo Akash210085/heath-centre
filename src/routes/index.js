@@ -1,6 +1,6 @@
 // import { Suspense, lazy } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
-
+import { useState } from "react";
 import AuthLayout from "../layouts/auth";
 import SignInPage from "../pages/auth/SignIn";
 import SignUpPage from "../pages/auth/SignUp";
@@ -24,23 +24,73 @@ import Page404 from "../pages/Page404";
 // };
 
 export default function Router() {
+  const [showSnachbar, setShowSnachbar] = useState(false);
+  const [snachbarData, setSnachbarData] = useState("");
+  const [severity, setSeverity] = useState("");
   return useRoutes([
     {
       path: "/auth",
-      element: <AuthLayout />,
+      element: (
+        <AuthLayout
+          snachbarData={snachbarData}
+          showSnachbar={showSnachbar}
+          setShowSnachbar={setShowSnachbar}
+          severity={severity}
+        />
+      ),
       children: [
         {
           path: "login",
-          element: <SignInPage />,
+          element: (
+            <SignInPage
+              setShowSnachbar={setShowSnachbar}
+              setSnachbarData={setSnachbarData}
+              setSeverity={setSeverity}
+            />
+          ),
         },
         {
           path: "register",
-          element: <SignUpPage />,
+          element: (
+            <SignUpPage
+              setShowSnachbar={setShowSnachbar}
+              setSnachbarData={setSnachbarData}
+              setSeverity={setSeverity}
+            />
+          ),
         },
-        { path: "forgot-password", element: <ForgotPasswordPage /> },
-        { path: "reset-password", element: <ResetPasswordPage /> },
-        { path: "verify", element: <VerifyPasswordPage /> },
-        { path: "404", element: <Page404 /> },
+        {
+          path: "forgot-password",
+          element: (
+            <ForgotPasswordPage
+              setShowSnachbar={setShowSnachbar}
+              setSnachbarData={setSnachbarData}
+              setSeverity={setSeverity}
+            />
+          ),
+        },
+        {
+          path: "reset-password",
+          element: (
+            <ResetPasswordPage
+              setShowSnachbar={setShowSnachbar}
+              setSnachbarData={setSnachbarData}
+              setSeverity={setSeverity}
+            />
+          ),
+        },
+        {
+          path: "verify",
+          element: (
+            <VerifyPasswordPage
+              setShowSnachbar={setShowSnachbar}
+              setSnachbarData={setSnachbarData}
+              setSeverity={setSeverity}
+            />
+          ),
+        },
+        { path: "blank", element: "" },
+        { path: "*", element: <Navigate to="/404" replace /> },
       ],
     },
     {
@@ -52,10 +102,11 @@ export default function Router() {
         { path: "/hc/profile", element: <Profile /> },
         { path: "/hc/contacts", element: <Contacts /> },
         { path: "/hc/chats", element: <Chats /> },
-        { path: "404", element: <Page404 /> },
         { path: "*", element: <Navigate to="/404" replace /> },
       ],
     },
+
+    { path: "404", element: <Page404 /> },
     { path: "*", element: <Navigate to="/404" replace /> },
   ]);
 }

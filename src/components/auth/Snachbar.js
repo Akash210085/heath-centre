@@ -12,17 +12,19 @@ export default function CustomizedSnackbars(props) {
     props.setShowSnachbar(false);
   };
 
+  // console.log(props.severity);
+
   return (
     <div>
       <Snackbar
         open={props.showSnachbar}
-        autoHideDuration={3000}
+        autoHideDuration={4000}
         onClose={handleClose}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <Alert
           onClose={handleClose}
-          severity="error"
+          severity={props.severity}
           variant="filled"
           sx={{ width: "100%" }}
         >

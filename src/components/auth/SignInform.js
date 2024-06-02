@@ -10,7 +10,6 @@ import TextField from "@mui/material/TextField";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoadingButton from "@mui/lab/LoadingButton";
-import CustomizedSnackbars from "./Snachbar";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +26,7 @@ const theme = createTheme({
   },
 });
 
-function SignInform() {
+function SignInform(props) {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -42,8 +41,7 @@ function SignInform() {
   const [passwordError, SetPasswordError] = useState(false);
   const [emailHelperText, SetEmailHelperText] = useState("");
   const [passwordHelperText, SetPasswordHelperText] = useState("");
-  const [showSnachbar, setShowSnachbar] = useState(false);
-  const [snachbarData, setSnachbarData] = useState("");
+
   const isEmail = (email) => /^[A-Z0-9._%+-]+@iitk.ac.in$/i.test(email);
   const navigate = useNavigate();
 
@@ -86,14 +84,15 @@ function SignInform() {
           },
         }
       )
-      .then((res) => {
-        console.log(res.data);
+      .then((response) => {
+        console.log(response.data);
         navigate("/hc/dashboard");
       })
       .catch((err) => {
         console.log(err.response.data);
-        setShowSnachbar(true);
-        setSnachbarData(err.response.data.message);
+        props.setSeverity(err.response.data.status);
+        props.setShowSnachbar(true);
+        props.setSnachbarData(err.response.data.message);
       });
   }
 
@@ -165,12 +164,6 @@ function SignInform() {
               Sign In
             </LoadingButton>
           </ThemeProvider>
-
-          <CustomizedSnackbars
-            snachbarData={snachbarData}
-            showSnachbar={showSnachbar}
-            setShowSnachbar={setShowSnachbar}
-          />
 
           <Stack direction={"row"} justifyContent={"space-between"}>
             <p>Don't have an account?</p>
