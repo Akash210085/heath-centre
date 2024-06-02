@@ -15,7 +15,21 @@ import {
 
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Authbutton from "./Authbutton";
+import axios from "axios";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+const { palette } = createTheme();
+const { augmentColor } = palette;
+const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
+const theme = createTheme({
+  palette: {
+    anger: createColor("#F40B27"),
+    apple: createColor("#5DBA40"),
+    steelBlue: createColor("#5C76B7"),
+    violet: createColor("#BC00A3"),
+    new: createColor("#5f9eA0"),
+  },
+});
 
 function Signupform(props) {
   const [value, setValue] = useState("one");
@@ -172,7 +186,27 @@ function Signupform(props) {
     });
   }
 
-  function handleSubmit() {}
+  function handleSubmit(e) {
+    e.preventDefault();
+    axios
+      .post(
+        "http://localhost:3001/auth/register",
+        {
+          ...student,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   return (
     <div>
@@ -188,95 +222,106 @@ function Signupform(props) {
         </Tabs>
       </Box>
       <div className="signupform">
-        <Stack spacing={3} sx={{ width: 300 }} className="customClass">
-          <TextField
-            name="name"
-            label="Name"
-            variant="outlined"
-            value={student.name}
-            onChange={(event) => {
-              const newValue = event.target.value;
-              SetStudent((preValue) => {
-                return {
-                  ...preValue,
-                  name: newValue,
-                };
-              });
-            }}
-          ></TextField>
+        <form
+          onSubmit={(e) => {
+            handleSubmit(e);
+          }}
+        >
+          <Stack spacing={3} sx={{ width: 300 }} className="customClass">
+            <TextField
+              name="name"
+              label="Name"
+              variant="outlined"
+              value={student.name}
+              onChange={(event) => {
+                const newValue = event.target.value;
+                SetStudent((preValue) => {
+                  return {
+                    ...preValue,
+                    name: newValue,
+                  };
+                });
+              }}
+            ></TextField>
 
-          <TextField
-            name="rollNo"
-            label="Roll No"
-            variant="outlined"
-            value={student.rollNo}
-            error={error.rollNo}
-            helperText={helperText.rollNo}
-            onChange={changeRollNo}
-          ></TextField>
+            <TextField
+              name="rollNo"
+              label="Roll No"
+              variant="outlined"
+              value={student.rollNo}
+              error={error.rollNo}
+              helperText={helperText.rollNo}
+              onChange={changeRollNo}
+            ></TextField>
 
-          <TextField
-            name="email"
-            label="IITK Email ID"
-            variant="outlined"
-            value={student.email}
-            error={error.email}
-            helperText={helperText.email}
-            onChange={changeEmail}
-          ></TextField>
-          <FormControl
-            sx={{ m: 1, width: "25ch" }}
-            variant="outlined"
-            className="customClass"
-          >
-            <InputLabel
-              htmlFor="outlined-adornment-password"
-              error={error.password}
+            <TextField
+              name="email"
+              label="IITK Email ID"
+              variant="outlined"
+              value={student.email}
+              error={error.email}
+              helperText={helperText.email}
+              onChange={changeEmail}
+            ></TextField>
+            <FormControl
+              sx={{ m: 1, width: "25ch" }}
+              variant="outlined"
+              className="customClass"
             >
-              Password
-            </InputLabel>
-            <OutlinedInput
-              name="password"
-              onChange={changePassword}
-              value={student.password}
-              error={error.password}
-              sx={{ width: 300 }}
-              id="outlined-adornment-password"
-              type={showPassword ? "text" : "password"}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Password"
-            />
-            <FormHelperText id="outlined-weight-helper-text">
-              {helperText.password}
-            </FormHelperText>
-          </FormControl>
-
-          <Authbutton
-            buttonText={"Sign Up"}
-            handleSubmit={handleSubmit}
-            isDisabled={
-              student.name === "" ||
-              student.rollNo === "" ||
-              student.iitkEmail === "" ||
-              student.password === "" ||
-              error.name ||
-              error.rollNo ||
-              error.iitkEmail ||
-              error.password
-            }
-          />
-        </Stack>
+              <InputLabel
+                htmlFor="outlined-adornment-password"
+                error={error.password}
+              >
+                Password
+              </InputLabel>
+              <OutlinedInput
+                name="password"
+                onChange={changePassword}
+                value={student.password}
+                error={error.password}
+                sx={{ width: 300 }}
+                id="outlined-adornment-password"
+                type={showPassword ? "text" : "password"}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+              />
+              <FormHelperText id="outlined-weight-helper-text">
+                {helperText.password}
+              </FormHelperText>
+            </FormControl>
+            <ThemeProvider theme={theme}>
+              <LoadingButton
+                disabled={
+                  student.name === "" ||
+                  student.rollNo === "" ||
+                  student.iitkEmail === "" ||
+                  student.password === "" ||
+                  error.name ||
+                  error.rollNo ||
+                  error.iitkEmail ||
+                  error.password
+                }
+                onClick={handleSubmit}
+                variant="contained"
+                color="new"
+                type="submit"
+              >
+                Sign Up
+              </LoadingButton>
+            </ThemeProvider>
+          </Stack>
+        </form>
       </div>
     </div>
   );
