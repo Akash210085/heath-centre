@@ -7,6 +7,12 @@ import SignUpPage from "../pages/auth/SignUp";
 import ForgotPasswordPage from "../pages/auth/ForgotPassword";
 import ResetPasswordPage from "../pages/auth/ResetPassword";
 import VerifyPasswordPage from "../pages/auth/VerifyPassword";
+import DashboardLayout from "../layouts/dashboard";
+import DashboardPage from "../pages/app/DashboardPage";
+import Profile from "../pages/app/Profile";
+import Contacts from "../pages/app/Contacts";
+import Chats from "../pages/app/Chats";
+import Page404 from "../pages/Page404";
 // import LoadingScreen from "../components/LoadingScreen";
 
 // const Loadable = (Component) => (props) => {
@@ -34,19 +40,22 @@ export default function Router() {
         { path: "forgot-password", element: <ForgotPasswordPage /> },
         { path: "reset-password", element: <ResetPasswordPage /> },
         { path: "verify", element: <VerifyPasswordPage /> },
+        { path: "404", element: <Page404 /> },
       ],
     },
-    // {
-    //   path: "/",
-    //   element: <DashboardLayout />,
-    //   children: [
-    //     { element: <Navigate to={DEFAULT_PATH} replace />, index: true },
-    //     { path: "app", element: <GeneralApp /> },
-
-    //     { path: "404", element: <Page404 /> },
-    //     { path: "*", element: <Navigate to="/404" replace /> },
-    //   ],
-    // },
+    {
+      path: "/",
+      element: <DashboardLayout />,
+      children: [
+        { element: <Navigate to="/hc/dashboard" replace />, index: true },
+        { path: "/hc/dashboard", element: <DashboardPage /> },
+        { path: "/hc/profile", element: <Profile /> },
+        { path: "/hc/contacts", element: <Contacts /> },
+        { path: "/hc/chats", element: <Chats /> },
+        { path: "404", element: <Page404 /> },
+        { path: "*", element: <Navigate to="/404" replace /> },
+      ],
+    },
     { path: "*", element: <Navigate to="/404" replace /> },
   ]);
 }

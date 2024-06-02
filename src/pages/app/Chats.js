@@ -9,11 +9,11 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AddCommentIcon from "@mui/icons-material/AddComment";
-import { ChatList } from "../Data";
+import { ChatList } from "../../Data";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
-import ChatConversation from "./ChatConversation";
-import ChatElement from "./ChatElement";
+import ChatConversation from "../../components/ChatConversation";
+import ChatElement from "../../components/ChatElement";
 function Chats() {
   const [search, setSearch] = useState("");
   return (

@@ -13,6 +13,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import CustomizedSnackbars from "./Snachbar";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
@@ -44,6 +45,7 @@ function SignInform() {
   const [showSnachbar, setShowSnachbar] = useState(false);
   const [snachbarData, setSnachbarData] = useState("");
   const isEmail = (email) => /^[A-Z0-9._%+-]+@iitk.ac.in$/i.test(email);
+  const navigate = useNavigate();
 
   function onChangeEmail(event) {
     const newEmail = event.target.value;
@@ -86,6 +88,7 @@ function SignInform() {
       )
       .then((res) => {
         console.log(res.data);
+        navigate("/hc/dashboard");
       })
       .catch((err) => {
         console.log(err.response.data);
@@ -97,7 +100,7 @@ function SignInform() {
   return (
     <div className="signform">
       <form onSubmit={(e) => handleSubmit(e)}>
-        <Stack spacing={3} sx={{ width: 300 }}>
+        <Stack spacing={2} sx={{ width: 300 }}>
           <TextField
             id="outlined-basic"
             label="IITK Email ID"
@@ -146,7 +149,9 @@ function SignInform() {
               {passwordHelperText}
             </FormHelperText>
           </FormControl>
-
+          <Stack direction={"row"} alignItems={"center"} justifyContent={"end"}>
+            <a href="/auth/forgot-password">Forgot Password?</a>
+          </Stack>
           <ThemeProvider theme={theme}>
             <LoadingButton
               disabled={
@@ -160,15 +165,17 @@ function SignInform() {
               Sign In
             </LoadingButton>
           </ThemeProvider>
+
           <CustomizedSnackbars
             snachbarData={snachbarData}
             showSnachbar={showSnachbar}
             setShowSnachbar={setShowSnachbar}
           />
-          <p>
-            Don't have an account?
+
+          <Stack direction={"row"} justifyContent={"space-between"}>
+            <p>Don't have an account?</p>
             <a href="/auth/register">Sign Up</a>
-          </p>
+          </Stack>
         </Stack>
       </form>
     </div>

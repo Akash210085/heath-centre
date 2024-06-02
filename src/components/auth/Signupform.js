@@ -238,7 +238,7 @@ function Signupform(props) {
             handleSubmit(e);
           }}
         >
-          <Stack spacing={3} sx={{ width: 300 }} className="customClass">
+          <Stack spacing={2} sx={{ width: 300 }} className="customClass">
             <TextField
               name="name"
               label="Name"

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import Header from "./Header";
-import Footer from "./Footer";
+import Header from "../layouts/dashboard/Header";
+import Footer from "../layouts/dashboard/Footer";
 import Dashboard from "./Dashboard";
 import SignIn from "../pages/auth/SignIn";
-import Profile from "./Profile";
-import Contacts from "./Contacts";
+import Profile from "../pages/app/Profile";
+import Contacts from "../pages/app/Contacts";
 import SignUp from "../pages/auth/SignUp";
-import DashboardContainer from "./Dashboard/DashboardContainer";
+import DashboardContainer from "../pages/app/DashboardPage";
 import Chats from "./Chats";
 function GeneralApp() {
   const [isSignIn, SetIsSignIn] = useState(false);

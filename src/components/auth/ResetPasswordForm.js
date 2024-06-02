@@ -91,7 +91,7 @@ function ResetPasswordForm() {
           handleSubmit(e);
         }}
       >
-        <Stack spacing={3} sx={{ width: 300 }}>
+        <Stack spacing={2} sx={{ width: 300 }}>
           <TextField
             id="outlined-basic"
             label="New Password"

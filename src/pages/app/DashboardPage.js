@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Data from "./Data";
-import Form from "./Form";
-function DashboardContainer() {
+import Data from "../../components/Dashboard/Data";
+import Form from "../../components/Dashboard/Form";
+function DashboardPage() {
   const [appointment, SetAppointment] = useState({
     id: 0,
     appointmentType: "",
@@ -43,4 +43,4 @@ function DashboardContainer() {
   );
 }
 
-export default DashboardContainer;
+export default DashboardPage;

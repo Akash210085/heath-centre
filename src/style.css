@@ -96,7 +96,6 @@ form.create-note button {
 
 .flex-container p {
   color: gray;
-  margin-top: 10px;
 }
 .flex-container .welcome {
   margin-top: 100px;
@@ -192,4 +191,8 @@ input.text {
   outline: none;
   width: 100%;
   height: 60%;
+}
+
+.MuiStack-root {
+  margin-top: 0px;
 }
