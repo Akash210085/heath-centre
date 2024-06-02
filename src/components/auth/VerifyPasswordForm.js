@@ -3,6 +3,8 @@ import { Stack, TextField } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import CustomizedSnackbars from "./Snachbar";
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
@@ -24,6 +26,8 @@ function VerifyPasswordForm() {
   const [otpError, setOtpError] = useState(false);
   const [otpHelperText, setOtpHelperText] = useState("");
   const isEmail = (email) => /^[A-Z0-9._%+-]+@iitk.ac.in$/i.test(email);
+  const [showSnachbar, setShowSnachbar] = useState(false);
+  const [snachbarData, setSnachbarData] = useState("");
   function onChangeEmail(event) {
     const newEmail = event.target.value;
     if (!isEmail(newEmail)) {
@@ -48,6 +52,8 @@ function VerifyPasswordForm() {
     setOtp(newOpt);
   }
 
+  const navigate = useNavigate();
+
   function handleSubmit(e) {
     e.preventDefault();
     axios
@@ -65,9 +71,12 @@ function VerifyPasswordForm() {
       )
       .then((response) => {
         console.log(response);
+        navigate("/auth/login");
       })
       .catch((err) => {
         console.log(err);
+        setShowSnachbar(true);
+        setSnachbarData(err.response.data.message);
       });
   }
 
@@ -108,9 +117,14 @@ function VerifyPasswordForm() {
               color="new"
               type="submit"
             >
-              Reset Password
+              Verify OTP
             </LoadingButton>
           </ThemeProvider>
+          <CustomizedSnackbars
+            snachbarData={snachbarData}
+            showSnachbar={showSnachbar}
+            setShowSnachbar={setShowSnachbar}
+          />
         </Stack>
       </form>
     </div>

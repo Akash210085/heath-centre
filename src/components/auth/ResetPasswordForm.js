@@ -3,6 +3,7 @@ import { Stack, TextField } from "@mui/material";
 import axios from "axios";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CustomizedSnackbars from "./Snachbar";
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
@@ -23,6 +24,8 @@ function ResetPasswordForm() {
   const [passwordHelperText, setPasswordHelperText] = useState("");
   const [confirmPasswordHelperText, setConfirmpasswordHelperText] =
     useState("");
+  const [showSnachbar, setShowSnachbar] = useState(false);
+  const [snachbarData, setSnachbarData] = useState("");
   const isValidPassword = (password) =>
     /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,20}$/i.test(
       password
@@ -76,6 +79,8 @@ function ResetPasswordForm() {
       })
       .catch((err) => {
         console.log(err);
+        setShowSnachbar(true);
+        setSnachbarData(err.response.data.message);
       });
   }
 
@@ -124,6 +129,11 @@ function ResetPasswordForm() {
               Reset Password
             </LoadingButton>
           </ThemeProvider>
+          <CustomizedSnackbars
+            snachbarData={snachbarData}
+            showSnachbar={showSnachbar}
+            setShowSnachbar={setShowSnachbar}
+          />
         </Stack>
       </form>
     </div>

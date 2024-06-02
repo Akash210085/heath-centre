@@ -3,6 +3,7 @@ import { Stack, TextField } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
+import CustomizedSnackbars from "./Snachbar";
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
@@ -20,6 +21,8 @@ function ForgotPasswordForm() {
   const [emailError, SetEmailError] = useState(false);
   const [emailHelperText, setEmailHelperText] = useState("");
   const isEmail = (email) => /^[A-Z0-9._%+-]+@iitk.ac.in$/i.test(email);
+  const [showSnachbar, setShowSnachbar] = useState(false);
+  const [snachbarData, setSnachbarData] = useState("");
   function onChangeEmail(event) {
     const newEmail = event.target.value;
     if (!isEmail(newEmail)) {
@@ -51,6 +54,8 @@ function ForgotPasswordForm() {
       })
       .catch((err) => {
         console.log(err);
+        setShowSnachbar(true);
+        setSnachbarData(err.response.data.message);
       });
   }
   return (
@@ -83,6 +88,11 @@ function ForgotPasswordForm() {
               Send Reset Link
             </LoadingButton>
           </ThemeProvider>
+          <CustomizedSnackbars
+            snachbarData={snachbarData}
+            showSnachbar={showSnachbar}
+            setShowSnachbar={setShowSnachbar}
+          />
         </Stack>
       </form>
     </div>

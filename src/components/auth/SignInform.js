@@ -10,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoadingButton from "@mui/lab/LoadingButton";
+import CustomizedSnackbars from "./Snachbar";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 const { palette } = createTheme();
@@ -40,6 +41,8 @@ function SignInform() {
   const [passwordError, SetPasswordError] = useState(false);
   const [emailHelperText, SetEmailHelperText] = useState("");
   const [passwordHelperText, SetPasswordHelperText] = useState("");
+  const [showSnachbar, setShowSnachbar] = useState(false);
+  const [snachbarData, setSnachbarData] = useState("");
   const isEmail = (email) => /^[A-Z0-9._%+-]+@iitk.ac.in$/i.test(email);
 
   function onChangeEmail(event) {
@@ -81,11 +84,13 @@ function SignInform() {
           },
         }
       )
-      .then((response) => {
-        console.log(response);
+      .then((res) => {
+        console.log(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response.data);
+        setShowSnachbar(true);
+        setSnachbarData(err.response.data.message);
       });
   }
 
@@ -155,6 +160,11 @@ function SignInform() {
               Sign In
             </LoadingButton>
           </ThemeProvider>
+          <CustomizedSnackbars
+            snachbarData={snachbarData}
+            showSnachbar={showSnachbar}
+            setShowSnachbar={setShowSnachbar}
+          />
           <p>
             Don't have an account?
             <a href="/auth/register">Sign Up</a>

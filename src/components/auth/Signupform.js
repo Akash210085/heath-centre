@@ -18,6 +18,8 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
+import CustomizedSnackbars from "./Snachbar";
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
@@ -36,6 +38,8 @@ function Signupform(props) {
   const [showPassword, setShowPassword] = React.useState(false);
   const isEmail = (email) => /^[A-Z0-9._%+-]+@iitk.ac.in$/i.test(email);
   const isRoll = (rollNo) => /^[0-9]{5,}$/.test(rollNo);
+  const [showSnachbar, setShowSnachbar] = useState(false);
+  const [snachbarData, setSnachbarData] = useState("");
   const isValidPassword = (password) =>
     /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,20}$/i.test(
       password
@@ -186,13 +190,17 @@ function Signupform(props) {
     });
   }
 
+  const navigate = useNavigate();
+
   function handleSubmit(e) {
     e.preventDefault();
+    console.log(student);
     axios
       .post(
         "http://localhost:3001/auth/register",
         {
           ...student,
+          email: student.iitkEmail,
         },
         {
           headers: {
@@ -202,9 +210,12 @@ function Signupform(props) {
       )
       .then((response) => {
         console.log(response);
+        navigate("/auth/verify");
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response.data);
+        setShowSnachbar(true);
+        setSnachbarData(err.response.data.message);
       });
   }
 
@@ -320,6 +331,11 @@ function Signupform(props) {
                 Sign Up
               </LoadingButton>
             </ThemeProvider>
+            <CustomizedSnackbars
+              snachbarData={snachbarData}
+              showSnachbar={showSnachbar}
+              setShowSnachbar={setShowSnachbar}
+            />
           </Stack>
         </form>
       </div>
