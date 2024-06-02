@@ -195,7 +195,7 @@ function Signupform(props) {
 
     await axios
       .post(
-        "http://localhost:3001/auth/register",
+        "https://hc-server-orcin.vercel.app/auth/register",
         {
           ...student,
           email: student.iitkEmail,

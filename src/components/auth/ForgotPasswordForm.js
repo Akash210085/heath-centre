@@ -38,7 +38,7 @@ function ForgotPasswordForm(props) {
     e.preventDefault();
     axios
       .post(
-        "http://localhost:3001/auth/forgot-password",
+        "https://hc-server-orcin.vercel.app//auth/forgot-password",
         {
           email: email,
         },
