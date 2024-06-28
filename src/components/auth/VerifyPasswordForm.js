@@ -56,7 +56,7 @@ function VerifyPasswordForm(props) {
     e.preventDefault();
     axios
       .post(
-        "https://hc-server-orcin.vercel.app/auth/verify",
+        "http://localhost:3001/auth/verify",
         {
           email,
           otp,

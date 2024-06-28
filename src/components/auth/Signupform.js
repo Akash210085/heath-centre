@@ -195,7 +195,7 @@ function Signupform(props) {
 
     await axios
       .post(
-        "https://hc-server-orcin.vercel.app/auth/register",
+        "http://localhost:3001/auth/register",
         {
           ...student,
           email: student.iitkEmail,
@@ -214,6 +214,7 @@ function Signupform(props) {
         props.setSnachbarData(response.data.message);
       })
       .catch((err) => {
+        console.log("hiiii");
         console.log(err);
         props.setSeverity(err.response.data.status);
         props.setShowSnachbar(true);

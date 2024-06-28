@@ -89,7 +89,7 @@ function ResetPasswordForm(props) {
     console.log(confirmPassword);
     axios
       .post(
-        "https://hc-server-orcin.vercel.app/auth/reset-password",
+        "http://localhost:3001/auth/reset-password",
         {
           password,
           confirmPassword,
