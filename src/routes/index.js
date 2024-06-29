@@ -1,6 +1,6 @@
 // import { Suspense, lazy } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
-import { useState } from "react";
+// import { useState } from "react";
 import AuthLayout from "../layouts/auth";
 import SignInPage from "../pages/auth/SignIn";
 import SignUpPage from "../pages/auth/SignUp";
@@ -24,70 +24,33 @@ import Page404 from "../pages/Page404";
 // };
 
 export default function Router() {
-  const [showSnachbar, setShowSnachbar] = useState(false);
-  const [snachbarData, setSnachbarData] = useState("");
-  const [severity, setSeverity] = useState("");
+  // const [showSnachbar, setShowSnachbar] = useState(false);
+  // const [snachbarData, setSnachbarData] = useState("");
+  // const [severity, setSeverity] = useState("");
   return useRoutes([
     {
       path: "/auth",
-      element: (
-        <AuthLayout
-          snachbarData={snachbarData}
-          showSnachbar={showSnachbar}
-          setShowSnachbar={setShowSnachbar}
-          severity={severity}
-        />
-      ),
+      element: <AuthLayout />,
       children: [
         {
           path: "login",
-          element: (
-            <SignInPage
-              setShowSnachbar={setShowSnachbar}
-              setSnachbarData={setSnachbarData}
-              setSeverity={setSeverity}
-            />
-          ),
+          element: <SignInPage />,
         },
         {
           path: "register",
-          element: (
-            <SignUpPage
-              setShowSnachbar={setShowSnachbar}
-              setSnachbarData={setSnachbarData}
-              setSeverity={setSeverity}
-            />
-          ),
+          element: <SignUpPage />,
         },
         {
           path: "forgot-password",
-          element: (
-            <ForgotPasswordPage
-              setShowSnachbar={setShowSnachbar}
-              setSnachbarData={setSnachbarData}
-              setSeverity={setSeverity}
-            />
-          ),
+          element: <ForgotPasswordPage />,
         },
         {
           path: "reset-password",
-          element: (
-            <ResetPasswordPage
-              setShowSnachbar={setShowSnachbar}
-              setSnachbarData={setSnachbarData}
-              setSeverity={setSeverity}
-            />
-          ),
+          element: <ResetPasswordPage />,
         },
         {
           path: "verify",
-          element: (
-            <VerifyPasswordPage
-              setShowSnachbar={setShowSnachbar}
-              setSnachbarData={setSnachbarData}
-              setSeverity={setSeverity}
-            />
-          ),
+          element: <VerifyPasswordPage />,
         },
         { path: "blank", element: "" },
         { path: "*", element: <Navigate to="/404" replace /> },

@@ -1,7 +1,12 @@
 import Router from "./routes";
-
+import CustomizedSnackbars from "./components/Snachbar";
 function App() {
-  return <Router />;
+  return (
+    <>
+      <Router />
+      <CustomizedSnackbars />
+    </>
+  );
 }
 
 export default App;

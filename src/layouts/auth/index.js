@@ -1,9 +1,8 @@
 import React from "react";
 import Heading from "./Heading";
 import { Navigate, Outlet } from "react-router-dom";
-import CustomizedSnackbars from "../../components/auth/Snachbar";
 import { useSelector } from "react-redux";
-function AuthLayout(props) {
+function AuthLayout() {
   const { isLoggedIn } = useSelector((state) => state.auth);
   if (isLoggedIn) {
     return <Navigate to={"/hc/dashboard"} />;
@@ -12,12 +11,6 @@ function AuthLayout(props) {
     <div>
       <Heading />
       <Outlet />
-      <CustomizedSnackbars
-        snachbarData={props.snachbarData}
-        showSnachbar={props.showSnachbar}
-        setShowSnachbar={props.setShowSnachbar}
-        severity={props.severity}
-      />
     </div>
   );
 }

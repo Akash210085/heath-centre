@@ -6,7 +6,8 @@ import Fab from "@mui/material/Fab";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-
+import { useDispatch } from "react-redux";
+import { AddAppoinment } from "../../redux/slices/app";
 const Allappoinment = [
   { label: "general consultation" },
   { label: "specific health concern" },
@@ -83,10 +84,52 @@ const Allslots = [
   ],
 ];
 
-function Form(props) {
+function Form() {
   const [doctors, SetDoctors] = useState([]);
   const [slots, SetSlots] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [appointment, SetAppointment] = useState({
+    id: 0,
+    appointmentType: "",
+    category: "",
+    doctorName: "",
+    preferredSlot: "",
+    reasonForAppointment: "",
+    status: "Request Sent",
+  });
+
+  // const [appointmentList, SetAppointmentList] = useState([]);
+  const dispatch = useDispatch();
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    //Api call to backend
+    try {
+      dispatch(
+        AddAppoinment({
+          ...appointment,
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+    // SetAppointmentList((preValue) => {
+    //   return [...preValue, appointment];
+    // });
+
+    SetAppointment((preValue) => {
+      let { id } = preValue;
+      return {
+        id: id + 1,
+        appointmentType: "",
+        category: "",
+        doctorName: "",
+        preferredSlot: "",
+        reasonForAppointment: "",
+        status: "Request Sent",
+      };
+    });
+  }
 
   return (
     <div>
@@ -107,7 +150,7 @@ function Form(props) {
                   options={Allappoinment}
                   onChange={(event, value) => {
                     const newValue = value.label;
-                    props.SetAppointment((preValue) => {
+                    SetAppointment((preValue) => {
                       return {
                         ...preValue,
                         appointmentType: newValue,
@@ -115,13 +158,12 @@ function Form(props) {
                     });
                     // console.log(props.appointment);
                   }}
-                  value={props.appointment.appointmentType}
+                  value={appointment.appointmentType}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       variant="standard"
                       label="Appoinment Type"
-                      
                     />
                   )}
                 />
@@ -142,15 +184,15 @@ function Form(props) {
                   onChange={(event, value) => {
                     const newValue = value.label;
                     SetDoctors(Alldoctors[value.id]);
-                    props.SetAppointment((preValue) => {
+                    SetAppointment((preValue) => {
                       return {
                         ...preValue,
                         category: newValue,
                       };
                     });
-                    console.log(props.appointment);
+                    console.log(appointment);
                   }}
-                  value={props.appointment.category}
+                  value={appointment.category}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -176,15 +218,15 @@ function Form(props) {
                   onChange={(event, value) => {
                     const newValue = value.label;
                     SetSlots(Allslots[value.id]);
-                    props.SetAppointment((preValue) => {
+                    SetAppointment((preValue) => {
                       return {
                         ...preValue,
                         doctorName: newValue,
                       };
                     });
-                    console.log(props.appointment);
+                    console.log(appointment);
                   }}
-                  value={props.appointment.doctorName}
+                  value={appointment.doctorName}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -210,14 +252,14 @@ function Form(props) {
                   }}
                   onChange={(event, value) => {
                     const newValue = value.label;
-                    props.SetAppointment((preValue) => {
+                    SetAppointment((preValue) => {
                       return {
                         ...preValue,
                         preferredSlot: newValue,
                       };
                     });
                   }}
-                  value={props.appointment.preferredSlot}
+                  value={appointment.preferredSlot}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -242,7 +284,7 @@ function Form(props) {
                 }}
                 onChange={(event) => {
                   const newValue = event.target.value;
-                  props.SetAppointment((preValue) => {
+                  SetAppointment((preValue) => {
                     return {
                       ...preValue,
                       reasonForAppointment: newValue,
@@ -256,14 +298,14 @@ function Form(props) {
                     : "Lodge A New Appointment..."
                 }
                 variant="standard"
-                value={props.appointment.reasonForAppointment}
+                value={appointment.reasonForAppointment}
               />
             </Grid>
           </Grid>
         </Box>
 
         <Zoom in={isExpanded}>
-          <Fab onClick={props.handleSubmit}>
+          <Fab onClick={handleSubmit}>
             <AddIcon />
           </Fab>
         </Zoom>
