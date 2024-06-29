@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Stack, TextField } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// import axios from "axios";
+// import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { VerifyEmail } from "../../redux/slices/auth";
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
@@ -25,7 +27,8 @@ function VerifyPasswordForm(props) {
   const [otpError, setOtpError] = useState(false);
   const [otpHelperText, setOtpHelperText] = useState("");
   const isEmail = (email) => /^[A-Z0-9._%+-]+@iitk.ac.in$/i.test(email);
-
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.auth);
   function onChangeEmail(event) {
     const newEmail = event.target.value;
     if (!isEmail(newEmail)) {
@@ -50,36 +53,48 @@ function VerifyPasswordForm(props) {
     setOtp(newOpt);
   }
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
-    axios
-      .post(
-        "http://localhost:3001/auth/verify",
-        {
+
+    try {
+      //   Send API Request
+      dispatch(
+        VerifyEmail({
           email,
           otp,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-        navigate("/auth/login");
-        props.setSeverity(response.data.status);
-        props.setShowSnachbar(true);
-        props.setSnachbarData(response.data.message);
-      })
-      .catch((err) => {
-        console.log(err.response.data);
-        props.setSeverity(err.response.data.status);
-        props.setShowSnachbar(true);
-        props.setSnachbarData(err.response.data.message);
-      });
+        })
+      );
+    } catch (error) {
+      console.error(error);
+    }
+    // axios
+    //   .post(
+    //     "http://localhost:3001/auth/verify",
+    //     {
+    //       email,
+    //       otp,
+    //     },
+    //     {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //     }
+    //   )
+    //   .then((response) => {
+    //     console.log(response);
+    //     navigate("/auth/login");
+    //     props.setSeverity(response.data.status);
+    //     props.setShowSnachbar(true);
+    //     props.setSnachbarData(response.data.message);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.response.data);
+    //     props.setSeverity(err.response.data.status);
+    //     props.setShowSnachbar(true);
+    //     props.setSnachbarData(err.response.data.message);
+    //   });
   }
 
   return (
@@ -118,6 +133,7 @@ function VerifyPasswordForm(props) {
               variant="contained"
               color="new"
               type="submit"
+              loading={isLoading}
             >
               Verify OTP
             </LoadingButton>

@@ -11,8 +11,10 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// import axios from "axios";
+// import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { LoginUser } from "../../redux/slices/auth";
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
@@ -26,7 +28,7 @@ const theme = createTheme({
   },
 });
 
-function SignInform(props) {
+function SignInform() {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -43,7 +45,13 @@ function SignInform(props) {
   const [passwordHelperText, SetPasswordHelperText] = useState("");
 
   const isEmail = (email) => /^[A-Z0-9._%+-]+@iitk.ac.in$/i.test(email);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.auth);
+
+  // useEffect(() => {
+  //   console.log("Redux state:", auth);
+  // }, [auth]);
 
   function onChangeEmail(event) {
     const newEmail = event.target.value;
@@ -69,31 +77,43 @@ function SignInform(props) {
     }
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    axios
-      .post(
-        "http://localhost:3001/auth/login",
-        {
+    console.log(isLoading, "auth");
+    try {
+      dispatch(
+        LoginUser({
           email: email,
           password: password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-        navigate("/hc/dashboard");
-      })
-      .catch((err) => {
-        console.log(err.response.data);
-        props.setSeverity(err.response.data.status);
-        props.setShowSnachbar(true);
-        props.setSnachbarData(err.response.data.message);
-      });
+        })
+      );
+    } catch (err) {
+      console.log(err);
+    }
+
+    // axios
+    //   .post(
+    //     "http://localhost:3001/auth/login",
+    //     {
+    //       email: email,
+    //       password: password,
+    //     },
+    //     {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //     }
+    //   )
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     navigate("/hc/dashboard");
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.response.data);
+    //     props.setSeverity(err.response.data.status);
+    //     props.setShowSnachbar(true);
+    //     props.setSnachbarData(err.response.data.message);
+    //   });
   }
 
   return (
@@ -160,6 +180,7 @@ function SignInform(props) {
               variant="contained"
               color="new"
               type="submit"
+              loading={isLoading}
             >
               Sign In
             </LoadingButton>

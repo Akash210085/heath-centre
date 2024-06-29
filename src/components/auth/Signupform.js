@@ -15,10 +15,12 @@ import {
 
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import axios from "axios";
+
 import LoadingButton from "@mui/lab/LoadingButton";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
+
+import { useDispatch, useSelector } from "react-redux";
+import { RegisterUser } from "../../redux/slices/auth";
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
@@ -70,6 +72,9 @@ function Signupform(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.auth);
 
   function changeRollNo(event) {
     const newValue = event.target.value;
@@ -188,38 +193,46 @@ function Signupform(props) {
     });
   }
 
-  const navigate = useNavigate();
-
   async function handleSubmit(e) {
     e.preventDefault();
-
-    await axios
-      .post(
-        "http://localhost:3001/auth/register",
-        {
+    try {
+      // submit data to backend
+      dispatch(
+        RegisterUser({
           ...student,
           email: student.iitkEmail,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response.data.message);
-        navigate("/auth/verify");
-        props.setSeverity(response.data.status);
-        props.setShowSnachbar(true);
-        props.setSnachbarData(response.data.message);
-      })
-      .catch((err) => {
-        console.log("hiiii");
-        console.log(err);
-        props.setSeverity(err.response.data.status);
-        props.setShowSnachbar(true);
-        props.setSnachbarData(err.response.data.message);
-      });
+        })
+      );
+    } catch (error) {
+      console.error(error);
+    }
+    // await axios
+    //   .post(
+    //     "http://localhost:3001/auth/register",
+    //     {
+    //       ...student,
+    //       email: student.iitkEmail,
+    //     },
+    //     {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //     }
+    //   )
+    //   .then((response) => {
+    //     console.log(response.data.message);
+    //     navigate("/auth/verify");
+    //     props.setSeverity(response.data.status);
+    //     props.setShowSnachbar(true);
+    //     props.setSnachbarData(response.data.message);
+    //   })
+    //   .catch((err) => {
+    //     console.log("hiiii");
+    //     console.log(err);
+    //     props.setSeverity(err.response.data.status);
+    //     props.setShowSnachbar(true);
+    //     props.setSnachbarData(err.response.data.message);
+    //   });
   }
 
   return (
@@ -330,6 +343,7 @@ function Signupform(props) {
                 variant="contained"
                 color="new"
                 type="submit"
+                loading={isLoading}
               >
                 Sign Up
               </LoadingButton>

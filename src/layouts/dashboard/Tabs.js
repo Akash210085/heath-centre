@@ -7,7 +7,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { ChatTeardropText } from "@phosphor-icons/react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
-
+import { LogoutUser } from "../../redux/slices/auth";
+import { useDispatch } from "react-redux";
 export default function IconTabs(props) {
   const [value, setValue] = React.useState(0);
   const navigate = useNavigate();
@@ -15,8 +16,15 @@ export default function IconTabs(props) {
     setValue(newValue);
   };
 
-  function handleLogoutClick() {
-    navigate("/auth/login");
+  const dispatch = useDispatch();
+
+  async function handleLogoutClick() {
+    // navigate("/auth/login");
+    try {
+      dispatch(LogoutUser());
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   function handleProfileClick() {
