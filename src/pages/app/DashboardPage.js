@@ -1,44 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import Data from "../../components/Dashboard/Data";
 import Form from "../../components/Dashboard/Form";
+import { useDispatch, useSelector } from "react-redux";
+import { FetchUserProfile } from "../../redux/slices/app";
 function DashboardPage() {
-  const [appointment, SetAppointment] = useState({
-    id: 0,
-    appointmentType: "",
-    category: "",
-    doctorName: "",
-    preferredSlot: "",
-    reasonForAppointment: "",
-    status: "Request Sent",
-  });
-  const [appointmentList, SetAppointmentList] = useState([]);
-  function handleSubmit(event) {
-    event.preventDefault();
-    SetAppointmentList((preValue) => {
-      return [...preValue, appointment];
-    });
+  const dispatch = useDispatch();
 
-    SetAppointment((preValue) => {
-      let { id } = preValue;
-      return {
-        id: id + 1,
-        appointmentType: "",
-        category: "",
-        doctorName: "",
-        preferredSlot: "",
-        reasonForAppointment: "",
-        status: "Request Sent",
-      };
-    });
-  }
+  const shouldFetchProfile = useSelector(
+    (state) => state.app.shouldFetchProfile
+  );
+  useEffect(() => {
+    dispatch(FetchUserProfile());
+  }, [dispatch, shouldFetchProfile]);
   return (
     <div>
-      <Form
-        appointment={appointment}
-        SetAppointment={SetAppointment}
-        handleSubmit={handleSubmit}
-      />
-      <Data appointmentList={appointmentList} />
+      <Form />
+      <Data />
     </div>
   );
 }

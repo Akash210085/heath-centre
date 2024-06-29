@@ -6,8 +6,8 @@ import Fab from "@mui/material/Fab";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { useDispatch } from "react-redux";
-import { AddAppoinment } from "../../redux/slices/app";
+import { useDispatch, useSelector } from "react-redux";
+import { AddAppoinment, SetShouldFetchProfile } from "../../redux/slices/app";
 const Allappoinment = [
   { label: "general consultation" },
   { label: "specific health concern" },
@@ -85,17 +85,22 @@ const Allslots = [
 ];
 
 function Form() {
+  const appointmentList = useSelector(
+    (state) => state.app.user.appointmentList
+  );
+  console.log("current id: ", appointmentList.length);
+  const currentId = appointmentList.length;
   const [doctors, SetDoctors] = useState([]);
   const [slots, SetSlots] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [appointment, SetAppointment] = useState({
-    id: 0,
+    id: currentId,
     appointmentType: "",
     category: "",
     doctorName: "",
     preferredSlot: "",
     reasonForAppointment: "",
-    status: "Request Sent",
+    status: "Pending",
   });
 
   // const [appointmentList, SetAppointmentList] = useState([]);
@@ -104,6 +109,7 @@ function Form() {
   async function handleSubmit(event) {
     event.preventDefault();
     //Api call to backend
+    dispatch(SetShouldFetchProfile(true));
     try {
       dispatch(
         AddAppoinment({
@@ -118,15 +124,14 @@ function Form() {
     // });
 
     SetAppointment((preValue) => {
-      let { id } = preValue;
       return {
-        id: id + 1,
+        id: preValue.id + 1,
         appointmentType: "",
         category: "",
         doctorName: "",
         preferredSlot: "",
         reasonForAppointment: "",
-        status: "Request Sent",
+        status: "Pending",
       };
     });
   }

@@ -9,6 +9,7 @@ import {
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
+import { useSelector } from "react-redux";
 
 const StyledGridOverlay = styled("div")(({ theme }) => ({
   display: "flex",
@@ -148,11 +149,14 @@ const columns = [
 //   },
 // ];
 
-export default function Data(props) {
+export default function Data() {
+  const appointmentList = useSelector(
+    (state) => state.app.user.appointmentList
+  );
   return (
     <div className="data">
       <DataGrid
-        rows={props.appointmentList}
+        rows={appointmentList}
         columns={columns}
         initialState={{
           pagination: {

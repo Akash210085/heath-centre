@@ -10,7 +10,7 @@ const initialState = {
     severity: null,
     message: null,
   },
-  appointmentList: [],
+  shouldFetchProfile: true,
 };
 //   users: [], // all users of app who are not friends and not requested yet
 //   all_users: [],
@@ -36,10 +36,26 @@ const slice = createSlice({
       state.snackbar.message = null;
       state.snackbar.severity = null;
     },
+    fetchUser(state, action) {
+      state.user = action.payload.user;
+      state.shouldFetchProfile = false;
+    },
+    setShouldFetchProfile(state, action) {
+      state.shouldFetchProfile = action.payload;
+    },
+    updateUser(state, action) {
+      state.user = action.payload.user;
+    },
   },
 });
 
 export default slice.reducer;
+
+export function SetShouldFetchProfile({ value }) {
+  return (dispatch, getState) => {
+    dispatch(slice.actions.setShouldFetchProfile({ value }));
+  };
+}
 
 export function ShowSnackbar({ message, severity }) {
   return async (dispatch, getState) => {
@@ -59,7 +75,6 @@ export function CloseSnackbar() {
 
 export function AddAppoinment(formValues) {
   return async (dispatch, getState) => {
-    console.log("hiiii");
     await axios
       .post(
         "/hc/dashboard",
@@ -67,6 +82,7 @@ export function AddAppoinment(formValues) {
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${getState().auth.token}`,
           },
         }
       )
@@ -78,3 +94,22 @@ export function AddAppoinment(formValues) {
       });
   };
 }
+
+export const FetchUserProfile = () => {
+  return async (dispatch, getState) => {
+    axios
+      .get("/hc/get-me", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().auth.token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        dispatch(slice.actions.fetchUser({ user: response.data.data }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
