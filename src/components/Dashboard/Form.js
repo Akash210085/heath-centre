@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import AddIcon from "@mui/icons-material/Add";
 import Zoom from "@mui/material/Zoom";
@@ -27,66 +27,67 @@ const Allcategory = [
   { id: 10, label: "Vaccination (Paediatrician)" },
 ];
 
-const Alldoctors = [
-  [{ id: 0, label: "Dr. Shubha Agarwal" }],
-  [
-    { id: 1, label: "Dr. K.K. Dokania" },
-    { id: 2, label: "Dr. Vivek Saxena" },
-  ],
-  [{ id: 3, label: "Dr. Gopal Singh Dhanik" }],
-  [{ id: 4, label: "Dr. Alok Bajpai" }],
-  [
-    { id: 5, label: "Dr. Nadeem Faruqui" },
-    { id: 6, label: "Dr. Sanjai Rastogi" },
-  ],
-  [
-    { id: 7, label: "Dr. Ashish Agrawal" },
-    { id: 8, label: "Dr. Shekhar Rastogi" },
-  ],
-  [{ id: 9, label: "Dr. Rakesh Chandra" }],
-  [{ id: 10, label: "Dr. Rajan Bhargava" }],
-  [{ id: 11, label: "Dr. S. K. Mishra" }],
-  [{ id: 12, label: "Madhuraj Hospital Pvt Ltd (MHPL)" }],
-  [{ id: 13, label: "Dr. Gaurav Arya" }],
-];
+// const Alldoctors = [
+//   [{ id: 0, label: "Dr. Shubha Agarwal" }],
+//   [
+//     { id: 1, label: "Dr. K.K. Dokania" },
+//     { id: 2, label: "Dr. Vivek Saxena" },
+//   ],
+//   [{ id: 3, label: "Dr. Gopal Singh Dhanik" }],
+//   [{ id: 4, label: "Dr. Alok Bajpai" }],
+//   [
+//     { id: 5, label: "Dr. Nadeem Faruqui" },
+//     { id: 6, label: "Dr. Sanjai Rastogi" },
+//   ],
+//   [
+//     { id: 7, label: "Dr. Ashish Agrawal" },
+//     { id: 8, label: "Dr. Shekhar Rastogi" },
+//   ],
+//   [{ id: 9, label: "Dr. Rakesh Chandra" }],
+//   [{ id: 10, label: "Dr. Rajan Bhargava" }],
+//   [{ id: 11, label: "Dr. S. K. Mishra" }],
+//   [{ id: 12, label: "Madhuraj Hospital Pvt Ltd (MHPL)" }],
+//   [{ id: 13, label: "Dr. Gaurav Arya" }],
+// ];
 
-const Allslots = [
-  [{ label: "Tuesday 04:30 pm to 06:00 pm" }],
-  [{ label: "Tuesday 05:00 pm to 06:00 pm" }],
-  [{ label: "Thursday 05:30 pm to 06:30 pm" }],
-  [{ label: "Wednesday 05:30 pm to 06.30 pm" }],
-  [{ label: "Thursday 11:00 am to 01:00 pm" }],
-  [{ label: "Thursday 01:00 pm to 02:00 pm" }],
-  [{ label: "Saturday 09:30 am to 10:30 am" }],
-  [{ label: "Thursday 05:00 pm to 06:00 pm" }],
-  [{ label: "Saturday 10:00 am to 11.00 am" }],
-  [{ label: "Saturday 10:00 am to 11.00 am" }],
-  [{ label: "Saturday 03:00 pm to 04:00 pm" }],
+// const Allslots = [
+//   [{ label: "Tuesday 04:30 pm to 06:00 pm" }],
+//   [{ label: "Tuesday 05:00 pm to 06:00 pm" }],
+//   [{ label: "Thursday 05:30 pm to 06:30 pm" }],
+//   [{ label: "Wednesday 05:30 pm to 06.30 pm" }],
+//   [{ label: "Thursday 11:00 am to 01:00 pm" }],
+//   [{ label: "Thursday 01:00 pm to 02:00 pm" }],
+//   [{ label: "Saturday 09:30 am to 10:30 am" }],
+//   [{ label: "Thursday 05:00 pm to 06:00 pm" }],
+//   [{ label: "Saturday 10:00 am to 11.00 am" }],
+//   [{ label: "Saturday 10:00 am to 11.00 am" }],
+//   [{ label: "Saturday 03:00 pm to 04:00 pm" }],
 
-  [
-    { label: "Monday 09:00 am to 12:00 noon" },
-    { label: "Tuesday 09:00 am to 12:00 noon" },
-    { label: "Wednesday 09:00 am to 12:00 noon" },
-    { label: "Thursday 09:00 am to 12:00 noon" },
-    { label: "Friday 09:00 am to 12:00 noon" },
-    { label: "Saturday 09:00 am to 12:00 noon" },
-  ],
-  [
-    { label: "Tuesday 11:00 am to 03:00 pm" },
-    { label: "Wednesday 11:00 am to 03:00 pm" },
-    { label: "Thursday 11:00 am to 03:00 pm" },
-    { label: "Friday 11:00 am to 03:00 pm" },
-    { label: "Saturday 11:00 am to 03:00 pm" },
-  ],
-  [
-    { label: "Second Wednesday 11:00 am to 12:30 pm" },
-    { label: "Fourth Wednesday 11:00 am to 12:30 pm" },
-  ],
-];
+//   [
+//     { label: "Monday 09:00 am to 12:00 noon" },
+//     { label: "Tuesday 09:00 am to 12:00 noon" },
+//     { label: "Wednesday 09:00 am to 12:00 noon" },
+//     { label: "Thursday 09:00 am to 12:00 noon" },
+//     { label: "Friday 09:00 am to 12:00 noon" },
+//     { label: "Saturday 09:00 am to 12:00 noon" },
+//   ],
+//   [
+//     { label: "Tuesday 11:00 am to 03:00 pm" },
+//     { label: "Wednesday 11:00 am to 03:00 pm" },
+//     { label: "Thursday 11:00 am to 03:00 pm" },
+//     { label: "Friday 11:00 am to 03:00 pm" },
+//     { label: "Saturday 11:00 am to 03:00 pm" },
+//   ],
+//   [
+//     { label: "Second Wednesday 11:00 am to 12:30 pm" },
+//     { label: "Fourth Wednesday 11:00 am to 12:30 pm" },
+//   ],
+// ];
 
 function Form() {
   const appointmentList = useSelector((state) => state.app.appointments);
   const currentId = appointmentList.length;
+  console.log(currentId);
   const [doctors, SetDoctors] = useState([]);
   const [slots, SetSlots] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -99,19 +100,29 @@ function Form() {
     reasonForAppointment: "",
     status: "Pending",
   });
-
+  const [filterData, setFilterData] = useState([]);
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.app.user);
+  const { user, allSlotData } = useSelector((state) => state.app);
+  const [doctorId, setDoctorId] = useState(0);
+
+  useEffect(() => {
+    SetAppointment((preValue) => {
+      return {
+        ...preValue,
+        id: currentId,
+      };
+    });
+  }, [currentId]);
   async function handleSubmit(event) {
     event.preventDefault();
     //Api call to backend
-
+    // console.log(appointment);
     try {
       dispatch(
         AddAppoinment({
           ...appointment,
           from: user._id,
-          to: "doctor_id",
+          to: doctorId,
         })
       );
     } catch (error) {
@@ -187,7 +198,16 @@ function Form() {
                   }}
                   onChange={(event, value) => {
                     const newValue = value.label;
-                    SetDoctors(Alldoctors[value.id]);
+                    const Data = allSlotData.filter((el) => {
+                      return el.category === value.label;
+                    });
+
+                    setFilterData(Data);
+                    const newDoctors = Data.map((el) => {
+                      return el.name;
+                    });
+
+                    SetDoctors(newDoctors);
                     SetAppointment((preValue) => {
                       return {
                         ...preValue,
@@ -220,12 +240,17 @@ function Form() {
                     width: 300,
                   }}
                   onChange={(event, value) => {
-                    const newValue = value.label;
-                    SetSlots(Allslots[value.id]);
+                    // console.log(filterData);
+                    // console.log(value);
+                    const Data = filterData.filter((el) => {
+                      return el.name === value;
+                    });
+                    SetSlots(Data[0].slots);
+                    setDoctorId(Data[0].id);
                     SetAppointment((preValue) => {
                       return {
                         ...preValue,
-                        doctorName: newValue,
+                        doctorName: value,
                       };
                     });
                     // console.log(appointment);
@@ -255,7 +280,7 @@ function Form() {
                     width: 300,
                   }}
                   onChange={(event, value) => {
-                    const newValue = value.label;
+                    const newValue = value;
                     SetAppointment((preValue) => {
                       return {
                         ...preValue,

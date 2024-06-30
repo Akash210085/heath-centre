@@ -87,8 +87,14 @@ function Profile() {
 
   const [editProfile, setEditProfile] = useState(false);
   const dispatch = useDispatch();
-  const { user, isLoading, slotData } = useSelector((state) => state.app);
-
+  const { user, isLoading } = useSelector((state) => state.app);
+  let { slotData } = useSelector((state) => state.app);
+  if (slotData === null) {
+    slotData = {
+      slots: [],
+      category: "",
+    };
+  }
   const [allSlots, setAllSlots] = useState(slotData.slots);
   const [category, setCategory] = useState(slotData.category);
   function handleAdd() {

@@ -2,7 +2,12 @@ import React, { useEffect } from "react";
 import Data from "../../components/Dashboard/Data";
 import Form from "../../components/Dashboard/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { FetchAppointments, FetchUserProfile } from "../../redux/slices/app";
+import {
+  FetchAppointments,
+  FetchUserProfile,
+  getAllSlot,
+  getSlot,
+} from "../../redux/slices/app";
 function DashboardPage() {
   const dispatch = useDispatch();
 
@@ -14,6 +19,14 @@ function DashboardPage() {
   useEffect(() => {
     dispatch(FetchAppointments());
   }, [dispatch, shouldFetch]);
+
+  useEffect(() => {
+    dispatch(getSlot());
+  });
+
+  useEffect(() => {
+    dispatch(getAllSlot());
+  });
   const role = useSelector((state) => state.app.user.role);
   return (
     <div>

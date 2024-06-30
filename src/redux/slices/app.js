@@ -14,6 +14,7 @@ const initialState = {
   appointments: [],
   isLoading: false,
   slotData: {},
+  allSlotData: [],
 };
 //   users: [], // all users of app who are not friends and not requested yet
 //   all_users: [],
@@ -65,6 +66,9 @@ const slice = createSlice({
       state.appointments = [];
       state.user = {};
     },
+    fetchAllSlots(state, action) {
+      state.allSlotData = action.payload.allSlotData;
+    },
   },
 });
 
@@ -110,6 +114,27 @@ export function getSlot() {
       .then((response) => {
         console.log(response);
         dispatch(slice.actions.fetchSlots({ slotData: response.data.data }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+}
+
+export function getAllSlot() {
+  return async (dispatch, getState) => {
+    axios
+      .get("/hc/get-allSlots", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().auth.token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        dispatch(
+          slice.actions.fetchAllSlots({ allSlotData: response.data.data })
+        );
       })
       .catch((err) => {
         console.log(err);

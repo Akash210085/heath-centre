@@ -157,7 +157,7 @@ form.create-note button {
   color: cadetblue;
 }
 .customClass #outlined-weight-helper-text {
-  color: greenyellow;
+  color: red;
 }
 
 .signup-tabs {
@@ -208,4 +208,9 @@ input.text {
 
 .MuiStack-root {
   margin-top: 0px;
+}
+
+.heading a {
+  text-decoration: none;
+  color: black;
 }
