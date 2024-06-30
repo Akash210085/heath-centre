@@ -14,9 +14,10 @@ function DashboardPage() {
   useEffect(() => {
     dispatch(FetchAppointments());
   }, [dispatch, shouldFetch]);
+  const role = useSelector((state) => state.app.role);
   return (
     <div>
-      <Form />
+      {role === "student" && <Form />}
       <Data />
     </div>
   );
