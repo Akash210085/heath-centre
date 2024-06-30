@@ -11,6 +11,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { getSlot } from "../../redux/slices/app";
 // import axios from "axios";
 // import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -88,6 +89,11 @@ function SignInform() {
           password: password,
         })
       );
+      try {
+        dispatch(getSlot());
+      } catch (err) {
+        console.log(err);
+      }
     } catch (err) {
       console.log(err);
     }

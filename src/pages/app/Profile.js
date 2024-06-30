@@ -81,16 +81,16 @@ function Profile() {
     from: "",
     to: "",
   });
-  const [category, setCategory] = useState("");
+
   const [dayError, setDayError] = useState(false);
   const [dayHelperText, setDayHelperText] = useState("");
 
-  const [allSlots, setAllSlots] = useState([]);
-
   const [editProfile, setEditProfile] = useState(false);
   const dispatch = useDispatch();
-  const { user, isLoading } = useSelector((state) => state.app);
+  const { user, isLoading, slotData } = useSelector((state) => state.app);
 
+  const [allSlots, setAllSlots] = useState(slotData.slots);
+  const [category, setCategory] = useState(slotData.category);
   function handleAdd() {
     if (slot.day === "") {
       setDayError(true);

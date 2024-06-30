@@ -9,6 +9,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
 import { LogoutUser } from "../../redux/slices/auth";
 import { useDispatch } from "react-redux";
+import { EraseDataOnLogout } from "../../redux/slices/app";
 export default function IconTabs(props) {
   const [value, setValue] = React.useState(0);
   const navigate = useNavigate();
@@ -22,6 +23,11 @@ export default function IconTabs(props) {
     // navigate("/auth/login");
     try {
       dispatch(LogoutUser());
+    } catch (err) {
+      console.log(err);
+    }
+    try {
+      dispatch(EraseDataOnLogout());
     } catch (err) {
       console.log(err);
     }

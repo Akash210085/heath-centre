@@ -105,7 +105,7 @@ function Form() {
   async function handleSubmit(event) {
     event.preventDefault();
     //Api call to backend
-    dispatch(SetShouldFetch(true));
+
     try {
       dispatch(
         AddAppoinment({
@@ -117,6 +117,7 @@ function Form() {
     } catch (error) {
       console.log(error);
     }
+    dispatch(SetShouldFetch(true));
     // SetAppointmentList((preValue) => {
     //   return [...preValue, appointment];
     // });

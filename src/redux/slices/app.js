@@ -13,6 +13,7 @@ const initialState = {
   shouldFetch: true,
   appointments: [],
   isLoading: false,
+  slotData: {},
 };
 //   users: [], // all users of app who are not friends and not requested yet
 //   all_users: [],
@@ -56,10 +57,24 @@ const slice = createSlice({
       state.error = action.payload.error;
       state.isLoading = action.payload.isLoading;
     },
+    fetchSlots(state, action) {
+      state.slotData = action.payload.slotData;
+    },
+    eraseDataOnLogout(state, action) {
+      state.slotData = {};
+      state.appointments = [];
+      state.user = {};
+    },
   },
 });
 
 export default slice.reducer;
+
+export function EraseDataOnLogout() {
+  return async (dispach, getState) => {
+    dispach(slice.actions.eraseDataOnLogout());
+  };
+}
 
 export function SetShouldFetch({ value }) {
   return (dispatch, getState) => {
@@ -80,6 +95,25 @@ export function ShowSnackbar({ message, severity }) {
 export function CloseSnackbar() {
   return async (dispatch, getState) => {
     dispatch(slice.actions.closeSnachbar());
+  };
+}
+
+export function getSlot() {
+  return async (dispatch, getState) => {
+    axios
+      .get("/hc/profile", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().auth.token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        dispatch(slice.actions.fetchSlots({ slotData: response.data.data }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 }
 
