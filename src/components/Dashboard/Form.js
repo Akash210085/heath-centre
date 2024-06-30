@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useDispatch, useSelector } from "react-redux";
-import { AddAppoinment, SetShouldFetchProfile } from "../../redux/slices/app";
+import { AddAppoinment, SetShouldFetch } from "../../redux/slices/app";
 const Allappoinment = [
   { label: "general consultation" },
   { label: "specific health concern" },
@@ -85,10 +85,7 @@ const Allslots = [
 ];
 
 function Form() {
-  const appointmentList = useSelector(
-    (state) => state.app.user.appointmentList
-  );
-  console.log("current id: ", appointmentList.length);
+  const appointmentList = useSelector((state) => state.app.appointments);
   const currentId = appointmentList.length;
   const [doctors, SetDoctors] = useState([]);
   const [slots, SetSlots] = useState([]);
@@ -103,17 +100,18 @@ function Form() {
     status: "Pending",
   });
 
-  // const [appointmentList, SetAppointmentList] = useState([]);
   const dispatch = useDispatch();
-
+  const user = useSelector((state) => state.app.user);
   async function handleSubmit(event) {
     event.preventDefault();
     //Api call to backend
-    dispatch(SetShouldFetchProfile(true));
+    dispatch(SetShouldFetch(true));
     try {
       dispatch(
         AddAppoinment({
           ...appointment,
+          from: user._id,
+          to: "doctor_id",
         })
       );
     } catch (error) {
@@ -195,7 +193,7 @@ function Form() {
                         category: newValue,
                       };
                     });
-                    console.log(appointment);
+                    // console.log(appointment);
                   }}
                   value={appointment.category}
                   renderInput={(params) => (
@@ -229,7 +227,7 @@ function Form() {
                         doctorName: newValue,
                       };
                     });
-                    console.log(appointment);
+                    // console.log(appointment);
                   }}
                   value={appointment.doctorName}
                   renderInput={(params) => (

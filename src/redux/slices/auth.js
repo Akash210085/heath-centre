@@ -11,6 +11,7 @@ const initialState = {
   user_id: null,
   email: "",
   error: false,
+  role: "student",
 };
 
 const slice = createSlice({
@@ -34,11 +35,20 @@ const slice = createSlice({
     updateRegisterEmail(state, action) {
       state.email = action.payload.email;
     },
+    updateRole(state, action) {
+      state.role = action.payload;
+    },
   },
 });
 
 // Reducer
 export default slice.reducer;
+
+export function UpdateRole(newRole) {
+  return async (dispatch, getState) => {
+    dispatch(slice.actions.updateRole(newRole));
+  };
+}
 
 export function LoginUser(formValues) {
   return async (dispatch, getState) => {

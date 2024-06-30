@@ -44,7 +44,8 @@ function SignInform() {
   const [emailHelperText, SetEmailHelperText] = useState("");
   const [passwordHelperText, SetPasswordHelperText] = useState("");
 
-  const isEmail = (email) => /^[A-Z0-9._%+-]+@iitk.ac.in$/i.test(email);
+  const isEmail = (email) =>
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(email);
   // const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.auth);
@@ -59,7 +60,7 @@ function SignInform() {
 
     if (!isEmail(newEmail)) {
       SetEmailError(true);
-      SetEmailHelperText("Invalid Email ID");
+      SetEmailHelperText("Email ID");
     } else {
       SetEmailError(false);
       SetEmailHelperText("");
@@ -122,7 +123,7 @@ function SignInform() {
         <Stack spacing={2} sx={{ width: 300 }}>
           <TextField
             id="outlined-basic"
-            label="IITK Email ID"
+            label="Email ID"
             variant="outlined"
             className="customClass"
             onChange={onChangeEmail}

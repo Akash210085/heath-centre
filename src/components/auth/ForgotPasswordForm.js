@@ -21,7 +21,8 @@ function ForgotPasswordForm(props) {
   const [email, setEmail] = useState("");
   const [emailError, SetEmailError] = useState(false);
   const [emailHelperText, setEmailHelperText] = useState("");
-  const isEmail = (email) => /^[A-Z0-9._%+-]+@iitk.ac.in$/i.test(email);
+  const isEmail = (email) =>
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(email);
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.auth);
 
@@ -29,7 +30,7 @@ function ForgotPasswordForm(props) {
     const newEmail = event.target.value;
     if (!isEmail(newEmail)) {
       SetEmailError(true);
-      setEmailHelperText("Invalid IITK Email");
+      setEmailHelperText("Invalid Email");
     } else {
       SetEmailError(false);
       setEmailHelperText("");
@@ -81,7 +82,7 @@ function ForgotPasswordForm(props) {
         <Stack spacing={2} sx={{ width: 300 }}>
           <TextField
             id="outlined-basic"
-            label="IITK Email ID"
+            label="Email ID"
             variant="outlined"
             className="customClass"
             onChange={onChangeEmail}

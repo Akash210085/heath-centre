@@ -20,7 +20,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RegisterUser } from "../../redux/slices/auth";
+import { RegisterUser, UpdateRole } from "../../redux/slices/auth";
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
@@ -35,15 +35,19 @@ const theme = createTheme({
 });
 
 function Signupform(props) {
-  const [value, setValue] = useState("one");
   const [showPassword, setShowPassword] = React.useState(false);
-  const isEmail = (email) => /^[A-Z0-9._%+-]+@iitk.ac.in$/i.test(email);
+  const isEmail = (email) =>
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(email);
   const isRoll = (rollNo) => /^[0-9]{5,}$/.test(rollNo);
 
   const isValidPassword = (password) =>
     /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,20}$/i.test(
       password
     );
+
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.auth);
+  const { role } = useSelector((state) => state.auth);
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -53,28 +57,35 @@ function Signupform(props) {
   const [error, setError] = useState({
     name: false,
     rollNo: false,
-    iitkEmail: false,
+    email: false,
     password: false,
   });
   const [helperText, setHelperText] = useState({
     name: "",
     rollNo: "",
-    iitkEmail: "",
+    email: "",
     password: "",
   });
   const [student, SetStudent] = useState({
     name: "",
     rollNo: "",
-    iitkEmail: "",
+    email: "",
     password: "",
+    contactNo: "",
+    designation: "",
   });
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    dispatch(UpdateRole(newValue));
+    SetStudent({
+      name: "",
+      rollNo: "",
+      email: "",
+      password: "",
+      contactNo: "",
+      designation: "",
+    });
   };
-
-  const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.auth);
 
   function changeRollNo(event) {
     const newValue = event.target.value;
@@ -125,7 +136,7 @@ function Signupform(props) {
       setHelperText((preValue) => {
         return {
           ...preValue,
-          email: "Invalid IITK Email",
+          email: "Invalid Email",
         };
       });
     } else {
@@ -145,7 +156,7 @@ function Signupform(props) {
     SetStudent((preValue) => {
       return {
         ...preValue,
-        iitkEmail: newValue,
+        email: newValue,
       };
     });
   }
@@ -200,7 +211,7 @@ function Signupform(props) {
       dispatch(
         RegisterUser({
           ...student,
-          email: student.iitkEmail,
+          role: role,
         })
       );
     } catch (error) {
@@ -211,7 +222,7 @@ function Signupform(props) {
     //     "http://localhost:3001/auth/register",
     //     {
     //       ...student,
-    //       email: student.iitkEmail,
+    //       email: student.email,
     //     },
     //     {
     //       headers: {
@@ -239,13 +250,13 @@ function Signupform(props) {
     <div>
       <Box sx={{ width: "100%" }}>
         <Tabs
-          value={value}
+          value={role}
           onChange={handleChange}
           aria-label="secondary tabs example"
         >
-          <Tab value="one" label="Students" />
-          <Tab value="two" label="Doctors" />
-          <Tab value="three" label="Staff" />
+          <Tab value="student" label="Students" />
+          <Tab value="doctor" label="Doctors" />
+          <Tab value="staff" label="Staff" />
         </Tabs>
       </Box>
       <div className="signupform">
@@ -271,19 +282,57 @@ function Signupform(props) {
               }}
             ></TextField>
 
-            <TextField
-              name="rollNo"
-              label="Roll No"
-              variant="outlined"
-              value={student.rollNo}
-              error={error.rollNo}
-              helperText={helperText.rollNo}
-              onChange={changeRollNo}
-            ></TextField>
+            {role === "student" && (
+              <TextField
+                name="rollNo"
+                label="Roll No"
+                variant="outlined"
+                value={student.rollNo}
+                error={error.rollNo}
+                helperText={helperText.rollNo}
+                onChange={changeRollNo}
+              ></TextField>
+            )}
+
+            {(role === "doctor" || role === "staff") && (
+              <TextField
+                name="contactNo"
+                label="Contact No"
+                variant="outlined"
+                value={student.contactNo}
+                onChange={(event) => {
+                  const newValue = event.target.value;
+                  SetStudent((preValue) => {
+                    return {
+                      ...preValue,
+                      contactNo: newValue,
+                    };
+                  });
+                }}
+              ></TextField>
+            )}
+
+            {(role === "doctor" || role === "staff") && (
+              <TextField
+                name="designation"
+                label="Designation"
+                variant="outlined"
+                value={student.designation}
+                onChange={(event) => {
+                  const newValue = event.target.value;
+                  SetStudent((preValue) => {
+                    return {
+                      ...preValue,
+                      designation: newValue,
+                    };
+                  });
+                }}
+              ></TextField>
+            )}
 
             <TextField
               name="email"
-              label="IITK Email ID"
+              label="Email ID"
               variant="outlined"
               value={student.email}
               error={error.email}
@@ -330,14 +379,23 @@ function Signupform(props) {
             <ThemeProvider theme={theme}>
               <LoadingButton
                 disabled={
-                  student.name === "" ||
-                  student.rollNo === "" ||
-                  student.iitkEmail === "" ||
-                  student.password === "" ||
-                  error.name ||
-                  error.rollNo ||
-                  error.iitkEmail ||
-                  error.password
+                  role === "student"
+                    ? student.name === "" ||
+                      student.rollNo === "" ||
+                      student.email === "" ||
+                      student.password === "" ||
+                      error.name ||
+                      error.rollNo ||
+                      error.email ||
+                      error.password
+                    : student.name === "" ||
+                      student.email === "" ||
+                      student.password === "" ||
+                      error.name ||
+                      error.email ||
+                      error.password ||
+                      student.contactNo === "" ||
+                      student.designation === ""
                 }
                 onClick={handleSubmit}
                 variant="contained"

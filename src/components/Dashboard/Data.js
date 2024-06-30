@@ -150,13 +150,11 @@ const columns = [
 // ];
 
 export default function Data() {
-  const appointmentList = useSelector(
-    (state) => state.app.user.appointmentList
-  );
+  const appointments = useSelector((state) => state.app.appointments);
   return (
     <div className="data">
       <DataGrid
-        rows={appointmentList}
+        rows={appointments}
         columns={columns}
         initialState={{
           pagination: {

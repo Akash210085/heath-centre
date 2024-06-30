@@ -10,7 +10,8 @@ const initialState = {
     severity: null,
     message: null,
   },
-  shouldFetchProfile: true,
+  shouldFetch: true,
+  appointments: [],
 };
 //   users: [], // all users of app who are not friends and not requested yet
 //   all_users: [],
@@ -38,22 +39,26 @@ const slice = createSlice({
     },
     fetchUser(state, action) {
       state.user = action.payload.user;
-      state.shouldFetchProfile = false;
+      state.shouldFetch = false;
     },
-    setShouldFetchProfile(state, action) {
-      state.shouldFetchProfile = action.payload;
+    setShouldFetch(state, action) {
+      state.shouldFetch = action.payload;
     },
     updateUser(state, action) {
       state.user = action.payload.user;
+    },
+    fetchAppointments(state, action) {
+      state.appointments = action.payload.appointments;
+      state.shouldFetch = false;
     },
   },
 });
 
 export default slice.reducer;
 
-export function SetShouldFetchProfile({ value }) {
+export function SetShouldFetch({ value }) {
   return (dispatch, getState) => {
-    dispatch(slice.actions.setShouldFetchProfile({ value }));
+    dispatch(slice.actions.setShouldFetch({ value }));
   };
 }
 
@@ -75,6 +80,7 @@ export function CloseSnackbar() {
 
 export function AddAppoinment(formValues) {
   return async (dispatch, getState) => {
+    console.log("ihiii", formValues);
     await axios
       .post(
         "/hc/dashboard",
@@ -94,6 +100,26 @@ export function AddAppoinment(formValues) {
       });
   };
 }
+export const FetchAppointments = () => {
+  return async (dispatch, getState) => {
+    axios
+      .get("/hc/get-appointments", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().auth.token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        dispatch(
+          slice.actions.fetchAppointments({ appointments: response.data.data })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
 
 export const FetchUserProfile = () => {
   return async (dispatch, getState) => {

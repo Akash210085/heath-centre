@@ -2,16 +2,18 @@ import React, { useEffect } from "react";
 import Data from "../../components/Dashboard/Data";
 import Form from "../../components/Dashboard/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { FetchUserProfile } from "../../redux/slices/app";
+import { FetchAppointments, FetchUserProfile } from "../../redux/slices/app";
 function DashboardPage() {
   const dispatch = useDispatch();
 
-  const shouldFetchProfile = useSelector(
-    (state) => state.app.shouldFetchProfile
-  );
+  const shouldFetch = useSelector((state) => state.app.shouldFetch);
   useEffect(() => {
     dispatch(FetchUserProfile());
-  }, [dispatch, shouldFetchProfile]);
+  }, [dispatch, shouldFetch]);
+
+  useEffect(() => {
+    dispatch(FetchAppointments());
+  }, [dispatch, shouldFetch]);
   return (
     <div>
       <Form />
