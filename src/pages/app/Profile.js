@@ -10,6 +10,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
+import LoadingButton from "@mui/lab/LoadingButton";
 // import dayjs from "dayjs";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import List from "@mui/material/List";
@@ -17,7 +18,8 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { AddSlot } from "../../redux/slices/app";
 const Allcategory = [
   { id: 0, label: "OBGY" },
   { id: 1, label: "Paediatric" },
@@ -79,13 +81,15 @@ function Profile() {
     from: "",
     to: "",
   });
-
+  const [category, setCategory] = useState("");
   const [dayError, setDayError] = useState(false);
   const [dayHelperText, setDayHelperText] = useState("");
 
   const [allSlots, setAllSlots] = useState([]);
 
   const [editProfile, setEditProfile] = useState(false);
+  const dispatch = useDispatch();
+  const { user, isLoading } = useSelector((state) => state.app);
 
   function handleAdd() {
     if (slot.day === "") {
@@ -108,7 +112,23 @@ function Profile() {
     });
   }
 
-  const user = useSelector((state) => state.app.user);
+  function handleSave() {
+    setEditProfile(false);
+    try {
+      dispatch(
+        AddSlot({
+          category,
+          id: user._id,
+          name: user.name,
+          certified: true,
+          slots: allSlots,
+        })
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div className="profile">
       <Paper elevation={3} className="profile-paper">
@@ -206,10 +226,10 @@ function Profile() {
                 width: 300,
               }}
               onChange={(event, value) => {
-                // const newValue = value.label;
-                // console.log(appointment);
+                const newValue = value.label;
+                setCategory(newValue);
               }}
-              // value=""
+              value={category}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -389,16 +409,14 @@ function Profile() {
             </List>
           )}
           {editProfile && (
-            <Fab
-              variant="extended"
-              size="small"
+            <LoadingButton
+              loading={isLoading}
+              variant="contained"
               color="success"
-              onClick={() => {
-                setEditProfile(false);
-              }}
+              onClick={handleSave}
             >
               Save
-            </Fab>
+            </LoadingButton>
           )}
         </Stack>
       </Paper>

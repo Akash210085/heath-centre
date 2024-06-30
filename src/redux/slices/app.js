@@ -12,6 +12,7 @@ const initialState = {
   },
   shouldFetch: true,
   appointments: [],
+  isLoading: false,
 };
 //   users: [], // all users of app who are not friends and not requested yet
 //   all_users: [],
@@ -51,6 +52,10 @@ const slice = createSlice({
       state.appointments = action.payload.appointments;
       state.shouldFetch = false;
     },
+    updateIsLoading(state, action) {
+      state.error = action.payload.error;
+      state.isLoading = action.payload.isLoading;
+    },
   },
 });
 
@@ -78,9 +83,44 @@ export function CloseSnackbar() {
   };
 }
 
+export function AddSlot(formValues) {
+  return async (dispatch, getState) => {
+    // console.log(formValues);
+    dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
+    await axios
+      .post(
+        "/hc/profile",
+        {
+          ...formValues,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${getState().auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+        dispatch(
+          ShowSnackbar({ severity: "success", message: response.data.message })
+        );
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: false })
+        );
+      })
+      .catch(function (error) {
+        console.log("hiii", error);
+        dispatch(ShowSnackbar({ severity: "error", message: error.message }));
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: true })
+        );
+      });
+  };
+}
+
 export function AddAppoinment(formValues) {
   return async (dispatch, getState) => {
-    console.log("ihiii", formValues);
     await axios
       .post(
         "/hc/dashboard",

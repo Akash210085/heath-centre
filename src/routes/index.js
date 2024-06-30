@@ -13,6 +13,8 @@ import Profile from "../pages/app/Profile";
 import Contacts from "../pages/app/Contacts";
 import Chats from "../pages/app/Chats";
 import Page404 from "../pages/Page404";
+import { useSelector } from "react-redux";
+import StudentProfile from "../pages/app/studentProfile";
 // import LoadingScreen from "../components/LoadingScreen";
 
 // const Loadable = (Component) => (props) => {
@@ -24,9 +26,8 @@ import Page404 from "../pages/Page404";
 // };
 
 export default function Router() {
-  // const [showSnachbar, setShowSnachbar] = useState(false);
-  // const [snachbarData, setSnachbarData] = useState("");
-  // const [severity, setSeverity] = useState("");
+  const role = useSelector((state) => state.app.user.role);
+
   return useRoutes([
     {
       path: "/auth",
@@ -62,7 +63,10 @@ export default function Router() {
       children: [
         { element: <Navigate to="/hc/dashboard" replace />, index: true },
         { path: "/hc/dashboard", element: <DashboardPage /> },
-        { path: "/hc/profile", element: <Profile /> },
+        {
+          path: "/hc/profile",
+          element: role === "student" ? <StudentProfile /> : <Profile />,
+        },
         { path: "/hc/contacts", element: <Contacts /> },
         { path: "/hc/chats", element: <Chats /> },
         { path: "*", element: <Navigate to="/404" replace /> },
