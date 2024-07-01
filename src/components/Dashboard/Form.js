@@ -104,7 +104,6 @@ function Form() {
   const dispatch = useDispatch();
   const { user, allSlotData } = useSelector((state) => state.app);
   const [doctorId, setDoctorId] = useState(0);
-
   useEffect(() => {
     SetAppointment((preValue) => {
       return {
@@ -123,6 +122,7 @@ function Form() {
           ...appointment,
           from: user._id,
           to: doctorId,
+          studentName: user.name,
         })
       );
     } catch (error) {

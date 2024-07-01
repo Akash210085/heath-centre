@@ -9,8 +9,13 @@ import {
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Chip, Stack } from "@mui/material";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { ApproveRejectAppointment } from "../../redux/slices/app";
+// import SendIcon from "@mui/icons-material/Send";
 const StyledGridOverlay = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -102,31 +107,6 @@ function CustomToolbar() {
     </GridToolbarContainer>
   );
 }
-const columns = [
-  { field: "id", headerName: "ID", width: 70 },
-  { field: "appointmentType", headerName: "Appointment Type", width: 250 },
-  { field: "category", headerName: "Category", width: 250 },
-  {
-    field: "doctorName",
-    headerName: "Doctor Name",
-    width: 250,
-  },
-  {
-    field: "preferredSlot",
-    headerName: "Preferred Slot",
-    width: 250,
-  },
-  {
-    field: "reasonForAppointment",
-    headerName: "Reason For Appoinment",
-    width: 250,
-  },
-  {
-    field: "status",
-    headerName: "Status",
-    width: 250,
-  },
-];
 
 // const rows = [
 //   {
@@ -150,7 +130,150 @@ const columns = [
 // ];
 
 export default function Data() {
-  const appointments = useSelector((state) => state.app.appointments);
+  const { appointments, user } = useSelector((state) => state.app);
+  const role = user.role;
+
+  const columns = [
+    { field: "id", headerName: "ID", width: 70 },
+    { field: "appointmentType", headerName: "Appointment Type", width: 250 },
+    { field: "category", headerName: "Category", width: 250 },
+    {
+      field: role === "doctor" ? "studentName" : "doctorName",
+      headerName: role === "doctor" ? "Student Name" : "Doctor Name",
+      width: 250,
+    },
+    {
+      field: "preferredSlot",
+      headerName: role === "doctor" ? "Chosen Slot" : "Preferred Slot",
+      width: 250,
+    },
+    {
+      field: "reasonForAppointment",
+      headerName: "Reason For Appoinment",
+      width: 250,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 250,
+      renderCell: (params) => (
+        <Chip
+          icon={
+            params.row.status === "Pending" ? (
+              <AutorenewIcon />
+            ) : params.row.status === "Approved" ? (
+              <CheckCircleOutlineIcon />
+            ) : (
+              <ErrorOutlineIcon />
+            )
+          }
+          label={params.row.status}
+          variant="outlined"
+          color={
+            params.row.status === "Pending"
+              ? "warning"
+              : params.row.status === "Approved"
+              ? "success"
+              : "error"
+          }
+        />
+      ),
+    },
+  ];
+
+  const dispach = useDispatch();
+
+  const handleApprove = (row) => {
+    console.log("Approved: ", row.status);
+    try {
+      dispach(
+        ApproveRejectAppointment({
+          id: row._id,
+          status: "Approved",
+        })
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleReject = (row) => {
+    console.log("Rejected: ", row);
+
+    try {
+      dispach(
+        ApproveRejectAppointment({
+          id: row._id,
+          status: "Rejected",
+        })
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  if (role === "doctor") {
+    columns.splice(2, 1);
+    columns.push({
+      field: "GetApprove",
+      headerName: "Approve / Reject",
+      width: 250,
+      renderCell: (params) => (
+        <Stack direction={"row"} alignItems={"center"}>
+          {params.row.status === "Pending" && (
+            <>
+              {" "}
+              <Button
+                variant="outlined"
+                color="success"
+                size="small"
+                onClick={() => handleApprove(params.row)}
+                sx={{ marginTop: "10px" }}
+              >
+                Approve
+              </Button>
+              <Button
+                variant="outlined"
+                color="error"
+                size="small"
+                sx={{ marginTop: "10px", marginLeft: "10px" }}
+                onClick={() => handleReject(params.row)}
+              >
+                Reject
+              </Button>
+            </>
+          )}
+        </Stack>
+      ),
+    });
+    console.log(columns);
+  }
+
+  // columns.push({
+  //   field: "remark",
+  //   headerName: role === "doctor" ? "Send Remark" : "Received Remark",
+  //   width: 250,
+  //   renderCell: (params) => (
+  //     <TextField
+  //       id="outlined-basic"
+  //       variant="outlined"
+  //       InputProps={{
+  //         endAdornment: (
+  //           <InputAdornment position="end">
+  //             <SendIcon />
+  //           </InputAdornment>
+  //         ),
+  //         sx: {
+  //           borderRadius: "20px",
+  //           height: "30px",
+  //         },
+  //       }}
+  //       size="small"
+  //       sx={{ marginTop: "10px" }}
+  //     />
+  //   ),
+  // });
+
   return (
     <div className="data">
       <DataGrid

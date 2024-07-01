@@ -18,7 +18,7 @@ function DashboardPage() {
 
   useEffect(() => {
     dispatch(FetchAppointments());
-  }, [dispatch, shouldFetch]);
+  });
 
   useEffect(() => {
     dispatch(getSlot());

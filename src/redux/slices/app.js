@@ -69,6 +69,17 @@ const slice = createSlice({
     fetchAllSlots(state, action) {
       state.allSlotData = action.payload.allSlotData;
     },
+
+    updateAppointment(state, action) {
+      const updatedAppointment = action.payload;
+      const index = state.appointments.findIndex(
+        (appointment) => appointment._id === updatedAppointment._id
+      );
+      console.log("hsdoicwso", updatedAppointment);
+      if (index !== -1) {
+        state.appointments[index] = updatedAppointment;
+      }
+    },
   },
 });
 
@@ -232,6 +243,33 @@ export const FetchUserProfile = () => {
       .then((response) => {
         console.log(response);
         dispatch(slice.actions.fetchUser({ user: response.data.data }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const ApproveRejectAppointment = (data) => {
+  return async (dispatch, getState) => {
+    axios
+      .patch(
+        `/hc/dashboard/${data.id}`,
+        { status: data.status },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getState().auth.token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        const updated_appointment = response.data.data;
+        dispatch(slice.actions.updateAppointment(updated_appointment));
+        dispatch(
+          ShowSnackbar({ severity: "success", message: response.data.message })
+        );
       })
       .catch((err) => {
         console.log(err);
