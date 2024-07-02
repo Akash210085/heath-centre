@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import {
   DataGrid,
@@ -10,13 +10,20 @@ import {
 } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
 import { useSelector } from "react-redux";
-import { Button, Chip, Stack } from "@mui/material";
+import {
+  Button,
+  Chip,
+  Stack,
+  TextField,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 // import { ApproveRejectAppointment } from "../../redux/slices/app";
 import { socket } from "../../socket";
-// import SendIcon from "@mui/icons-material/Send";
+import SendIcon from "@mui/icons-material/Send";
 const StyledGridOverlay = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -223,6 +230,18 @@ export default function Data() {
     }
   };
 
+  const handleRemark = (row) => {
+    try {
+      socket.emit("add_remark", {
+        id: row._id,
+        remark: remark,
+      });
+      console.log(" row id", row._id);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   if (role === "doctor") {
     columns.splice(2, 1);
     columns.push({
@@ -260,30 +279,53 @@ export default function Data() {
     // console.log(columns);
   }
 
-  // columns.push({
-  //   field: "remark",
-  //   headerName: role === "doctor" ? "Send Remark" : "Received Remark",
-  //   width: 250,
-  //   renderCell: (params) => (
-  //     <TextField
-  //       id="outlined-basic"
-  //       variant="outlined"
-  //       InputProps={{
-  //         endAdornment: (
-  //           <InputAdornment position="end">
-  //             <SendIcon />
-  //           </InputAdornment>
-  //         ),
-  //         sx: {
-  //           borderRadius: "20px",
-  //           height: "30px",
-  //         },
-  //       }}
-  //       size="small"
-  //       sx={{ marginTop: "10px" }}
-  //     />
-  //   ),
-  // });
+  const [remark, setRemark] = useState("");
+
+  columns.push({
+    field: "remark",
+    headerName: role === "doctor" ? "Send Remark" : "Received Remark",
+    width: 250,
+    renderCell: (params) =>
+      params.row.remark ? (
+        <div> {params.row.remark} </div>
+      ) : (
+        role === "doctor" && (
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            onChange={(event) => {
+              setRemark(event.target.value);
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="send"
+                    color="primary"
+                    onClick={() => {
+                      handleRemark(params.row);
+                    }}
+                  >
+                    <SendIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+              sx: {
+                borderRadius: "20px",
+                height: "30px",
+              },
+            }}
+            size="small"
+            sx={{ marginTop: "10px" }}
+            onKeyDown={(e) => {
+              if (e.key === " ") {
+                e.stopPropagation();
+              }
+            }}
+          />
+        )
+      ),
+  });
 
   return (
     <div className="data">

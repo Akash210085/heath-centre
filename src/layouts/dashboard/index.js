@@ -59,6 +59,18 @@ function DashboardLayout() {
 
       dispatch(ShowSnackbar({ severity: data.status, message: data.message }));
     });
+
+    socket.on("remark_sent", (data) => {
+      dispatch(UpdateAppointment(data.data));
+
+      dispatch(ShowSnackbar({ severity: data.status, message: data.message }));
+    });
+
+    socket.on("remark_recieved", (data) => {
+      dispatch(UpdateAppointment(data.data));
+
+      dispatch(ShowSnackbar({ severity: data.status, message: data.message }));
+    });
   }, [isLoggedIn, user_id, dispatch]);
 
   if (!isLoggedIn) {
