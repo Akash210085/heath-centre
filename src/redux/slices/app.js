@@ -84,6 +84,10 @@ const slice = createSlice({
 
     pushNewAppointment(state, action) {
       const new_appointment = action.payload;
+      const appointments = state.appointments;
+      const len = appointments.length;
+      console.log(appointments[len - 1], new_appointment);
+      if (appointments[len - 1]._id === new_appointment._id) return;
       state.appointments.push(new_appointment);
     },
   },
@@ -94,6 +98,12 @@ export default slice.reducer;
 export function EraseDataOnLogout() {
   return async (dispach, getState) => {
     dispach(slice.actions.eraseDataOnLogout());
+  };
+}
+
+export function UpdateAppointment(updated_appointment) {
+  return async (dispach, getState) => {
+    dispach(slice.actions.updateAppointment(updated_appointment));
   };
 }
 
@@ -262,29 +272,29 @@ export const FetchUserProfile = () => {
   };
 };
 
-export const ApproveRejectAppointment = (data) => {
-  return async (dispatch, getState) => {
-    axios
-      .patch(
-        `/hc/dashboard/${data.id}`,
-        { status: data.status },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getState().auth.token}`,
-          },
-        }
-      )
-      .then((response) => {
-        // console.log(response);
-        const updated_appointment = response.data.data;
-        dispatch(slice.actions.updateAppointment(updated_appointment));
-        dispatch(
-          ShowSnackbar({ severity: "success", message: response.data.message })
-        );
-      })
-      .catch((err) => {
-        // console.log(err);
-      });
-  };
-};
+// export const ApproveRejectAppointment = (data) => {
+//   return async (dispatch, getState) => {
+//     axios
+//       .patch(
+//         `/hc/dashboard/${data.id}`,
+//         { status: data.status },
+//         {
+//           headers: {
+//             "Content-Type": "application/json",
+//             Authorization: `Bearer ${getState().auth.token}`,
+//           },
+//         }
+//       )
+//       .then((response) => {
+//         // console.log(response);
+//         const updated_appointment = response.data.data;
+//         dispatch(slice.actions.updateAppointment(updated_appointment));
+//         dispatch(
+//           ShowSnackbar({ severity: "success", message: response.data.message })
+//         );
+//       })
+//       .catch((err) => {
+//         // console.log(err);
+//       });
+//   };
+// };

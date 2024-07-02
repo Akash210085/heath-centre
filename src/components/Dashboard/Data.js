@@ -9,12 +9,13 @@ import {
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button, Chip, Stack } from "@mui/material";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import { ApproveRejectAppointment } from "../../redux/slices/app";
+// import { ApproveRejectAppointment } from "../../redux/slices/app";
+import { socket } from "../../socket";
 // import SendIcon from "@mui/icons-material/Send";
 const StyledGridOverlay = styled("div")(({ theme }) => ({
   display: "flex",
@@ -181,17 +182,22 @@ export default function Data() {
     },
   ];
 
-  const dispach = useDispatch();
+  // const dispach = useDispatch();
 
   const handleApprove = (row) => {
     // console.log("Approved: ", row.status);
     try {
-      dispach(
-        ApproveRejectAppointment({
-          id: row._id,
-          status: "Approved",
-        })
-      );
+      // dispach(
+      //   ApproveRejectAppointment({
+      //     id: row._id,
+      //     status: "Approved",
+      //   })
+      // );
+
+      socket.emit("approve_reject_appointment", {
+        id: row._id,
+        status: "Approved",
+      });
     } catch (err) {
       console.log(err);
     }
@@ -201,12 +207,17 @@ export default function Data() {
     // console.log("Rejected: ", row);
 
     try {
-      dispach(
-        ApproveRejectAppointment({
-          id: row._id,
-          status: "Rejected",
-        })
-      );
+      // dispach(
+      //   ApproveRejectAppointment({
+      //     id: row._id,
+      //     status: "Rejected",
+      //   })
+      // );
+
+      socket.emit("approve_reject_appointment", {
+        id: row._id,
+        status: "Rejected",
+      });
     } catch (err) {
       console.log(err);
     }

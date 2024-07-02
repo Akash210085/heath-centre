@@ -5,7 +5,11 @@ import IconTabs from "./Tabs";
 import { Navigate, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { connectSocket, socket } from "../../socket";
-import { PushNewAppointment, ShowSnackbar } from "../../redux/slices/app";
+import {
+  PushNewAppointment,
+  ShowSnackbar,
+  UpdateAppointment,
+} from "../../redux/slices/app";
 function DashboardLayout() {
   const { isLoggedIn, user_id } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -31,7 +35,7 @@ function DashboardLayout() {
 
     socket.on("new_appointment_request", (data) => {
       dispatch(PushNewAppointment(data.data));
-      // console.log("recieved new Appointment", data);
+      console.log("recieved new Appointment", data.data);
       dispatch(
         ShowSnackbar({
           severity: "success",
@@ -42,6 +46,18 @@ function DashboardLayout() {
 
     socket.on("request_sent", (data) => {
       dispatch(ShowSnackbar({ severity: "success", message: data.message }));
+    });
+
+    socket.on("approve_reject_recieved", (data) => {
+      dispatch(UpdateAppointment(data.data));
+
+      dispatch(ShowSnackbar({ severity: data.status, message: data.message }));
+    });
+
+    socket.on("approve_reject_sent", (data) => {
+      dispatch(UpdateAppointment(data.data));
+
+      dispatch(ShowSnackbar({ severity: data.status, message: data.message }));
     });
   }, [isLoggedIn, user_id, dispatch]);
 
