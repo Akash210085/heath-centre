@@ -65,6 +65,7 @@ const slice = createSlice({
       state.slotData = {};
       state.appointments = [];
       state.user = {};
+      state.allSlotData = [];
     },
     fetchAllSlots(state, action) {
       state.allSlotData = action.payload.allSlotData;
@@ -75,10 +76,15 @@ const slice = createSlice({
       const index = state.appointments.findIndex(
         (appointment) => appointment._id === updatedAppointment._id
       );
-      console.log("hsdoicwso", updatedAppointment);
+      // console.log("hsdoicwso", updatedAppointment);
       if (index !== -1) {
         state.appointments[index] = updatedAppointment;
       }
+    },
+
+    pushNewAppointment(state, action) {
+      const new_appointment = action.payload;
+      state.appointments.push(new_appointment);
     },
   },
 });
@@ -88,6 +94,12 @@ export default slice.reducer;
 export function EraseDataOnLogout() {
   return async (dispach, getState) => {
     dispach(slice.actions.eraseDataOnLogout());
+  };
+}
+
+export function PushNewAppointment(new_appointment) {
+  return async (dispach, getState) => {
+    dispach(slice.actions.pushNewAppointment(new_appointment));
   };
 }
 
@@ -123,11 +135,11 @@ export function getSlot() {
         },
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         dispatch(slice.actions.fetchSlots({ slotData: response.data.data }));
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 }
@@ -142,13 +154,13 @@ export function getAllSlot() {
         },
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         dispatch(
           slice.actions.fetchAllSlots({ allSlotData: response.data.data })
         );
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 }
@@ -171,7 +183,7 @@ export function AddSlot(formValues) {
         }
       )
       .then(function (response) {
-        console.log(response);
+        // console.log(response);
         dispatch(
           ShowSnackbar({ severity: "success", message: response.data.message })
         );
@@ -180,7 +192,7 @@ export function AddSlot(formValues) {
         );
       })
       .catch(function (error) {
-        console.log("hiii", error);
+        // console.log("hiii", error);
         dispatch(ShowSnackbar({ severity: "error", message: error.message }));
         dispatch(
           slice.actions.updateIsLoading({ isLoading: false, error: true })
@@ -189,27 +201,27 @@ export function AddSlot(formValues) {
   };
 }
 
-export function AddAppoinment(formValues) {
-  return async (dispatch, getState) => {
-    await axios
-      .post(
-        "/hc/dashboard",
-        { ...formValues },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getState().auth.token}`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-}
+// export function AddAppoinment(formValues) {
+//   return async (dispatch, getState) => {
+//     await axios
+//       .post(
+//         "/hc/dashboard",
+//         { ...formValues },
+//         {
+//           headers: {
+//             "Content-Type": "application/json",
+//             Authorization: `Bearer ${getState().auth.token}`,
+//           },
+//         }
+//       )
+//       .then((response) => {
+//         // console.log(response);
+//       })
+//       .catch((error) => {
+//         // console.log(error);
+//       });
+//   };
+// }
 export const FetchAppointments = () => {
   return async (dispatch, getState) => {
     axios
@@ -226,7 +238,7 @@ export const FetchAppointments = () => {
         );
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 };
@@ -241,11 +253,11 @@ export const FetchUserProfile = () => {
         },
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         dispatch(slice.actions.fetchUser({ user: response.data.data }));
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 };
@@ -264,7 +276,7 @@ export const ApproveRejectAppointment = (data) => {
         }
       )
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         const updated_appointment = response.data.data;
         dispatch(slice.actions.updateAppointment(updated_appointment));
         dispatch(
@@ -272,7 +284,7 @@ export const ApproveRejectAppointment = (data) => {
         );
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 };

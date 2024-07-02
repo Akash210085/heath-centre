@@ -8,8 +8,9 @@ import { ChatTeardropText } from "@phosphor-icons/react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
 import { LogoutUser } from "../../redux/slices/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { EraseDataOnLogout } from "../../redux/slices/app";
+import { socket } from "../../socket";
 export default function IconTabs(props) {
   const [value, setValue] = React.useState(0);
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ export default function IconTabs(props) {
   };
 
   const dispatch = useDispatch();
+  const { user_id } = useSelector((state) => state.auth);
 
   async function handleLogoutClick() {
     // navigate("/auth/login");
@@ -31,6 +33,7 @@ export default function IconTabs(props) {
     } catch (err) {
       console.log(err);
     }
+    socket.emit("end", { user_id });
   }
 
   function handleProfileClick() {

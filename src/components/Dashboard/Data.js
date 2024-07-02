@@ -184,7 +184,7 @@ export default function Data() {
   const dispach = useDispatch();
 
   const handleApprove = (row) => {
-    console.log("Approved: ", row.status);
+    // console.log("Approved: ", row.status);
     try {
       dispach(
         ApproveRejectAppointment({
@@ -198,7 +198,7 @@ export default function Data() {
   };
 
   const handleReject = (row) => {
-    console.log("Rejected: ", row);
+    // console.log("Rejected: ", row);
 
     try {
       dispach(
@@ -246,7 +246,7 @@ export default function Data() {
         </Stack>
       ),
     });
-    console.log(columns);
+    // console.log(columns);
   }
 
   // columns.push({

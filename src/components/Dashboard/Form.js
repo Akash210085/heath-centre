@@ -7,7 +7,8 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useDispatch, useSelector } from "react-redux";
-import { AddAppoinment, SetShouldFetch } from "../../redux/slices/app";
+import { SetShouldFetch } from "../../redux/slices/app";
+import { socket } from "../../socket";
 const Allappoinment = [
   { label: "general consultation" },
   { label: "specific health concern" },
@@ -87,7 +88,7 @@ const Allcategory = [
 function Form() {
   const appointmentList = useSelector((state) => state.app.appointments);
   const currentId = appointmentList.length;
-  console.log(currentId);
+
   const [doctors, SetDoctors] = useState([]);
   const [slots, SetSlots] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -117,14 +118,21 @@ function Form() {
     //Api call to backend
     // console.log(appointment);
     try {
-      dispatch(
-        AddAppoinment({
-          ...appointment,
-          from: user._id,
-          to: doctorId,
-          studentName: user.name,
-        })
-      );
+      // dispatch(
+      //   AddAppoinment({
+      // ...appointment,
+      // from: user._id,
+      // to: doctorId,
+      // studentName: user.name,
+      //   })
+      // );
+
+      socket.emit("appointment_request", {
+        ...appointment,
+        from: user._id,
+        to: doctorId,
+        studentName: user.name,
+      });
     } catch (error) {
       console.log(error);
     }
