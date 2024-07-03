@@ -90,10 +90,22 @@ const slice = createSlice({
       if (appointments[len - 1]._id === new_appointment._id) return;
       state.appointments.push(new_appointment);
     },
+    updateSlotData(state, action) {
+      if (state.slotData === null) return;
+      state.slotData.certified = action.payload.certified;
+      state.slotData.category = action.payload.category;
+      state.slotData.editFile = action.payload.editFile;
+    },
   },
 });
 
 export default slice.reducer;
+
+export function UpdateSlotData(formValues) {
+  return async (dispach, getState) => {
+    dispach(slice.actions.updateSlotData(formValues));
+  };
+}
 
 export function EraseDataOnLogout() {
   return async (dispach, getState) => {
@@ -298,3 +310,38 @@ export const FetchUserProfile = () => {
 //       });
 //   };
 // };
+
+export function SubmitCertificate(formData) {
+  return async (dispatch, getState) => {
+    dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
+    console.log("form data", formData);
+    await axios
+      .post(
+        "/hc/profile/certificate",
+
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${getState().auth.token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then(function (response) {
+        // console.log(response);
+        dispatch(
+          ShowSnackbar({ severity: "success", message: response.data.message })
+        );
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: false })
+        );
+      })
+      .catch(function (error) {
+        // console.log("hiii", error);
+        dispatch(ShowSnackbar({ severity: "error", message: error.message }));
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: true })
+        );
+      });
+  };
+}
