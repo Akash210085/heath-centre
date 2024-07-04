@@ -15,7 +15,7 @@ export default function CustomizedSnackbars() {
       {message && open ? (
         <Snackbar
           open={open}
-          autoHideDuration={4000}
+          autoHideDuration={8000}
           onClose={() => {
             dispach(CloseSnackbar());
           }}

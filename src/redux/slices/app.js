@@ -86,8 +86,11 @@ const slice = createSlice({
       const new_appointment = action.payload;
       const appointments = state.appointments;
       const len = appointments.length;
-      console.log(appointments[len - 1], new_appointment);
-      if (appointments[len - 1]._id === new_appointment._id) return;
+      console.log("lenght", len);
+      console.log("appointment:", appointments);
+      // console.log(appointments[len - 1], new_appointment);
+      if (len !== 0 && appointments[len - 1]._id === new_appointment._id)
+        return;
       state.appointments.push(new_appointment);
     },
     updateSlotData(state, action) {
