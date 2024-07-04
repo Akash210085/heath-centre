@@ -15,6 +15,8 @@ const initialState = {
   isLoading: false,
   slotData: {},
   allSlotData: [],
+  all_users: [],
+  friends: [],
 };
 //   users: [], // all users of app who are not friends and not requested yet
 //   all_users: [],
@@ -43,6 +45,9 @@ const slice = createSlice({
     fetchUser(state, action) {
       state.user = action.payload.user;
       state.shouldFetch = false;
+    },
+    fetchAllUsers(state, action) {
+      state.all_users = action.payload.all_users;
     },
     setShouldFetch(state, action) {
       state.shouldFetch = action.payload;
@@ -99,14 +104,68 @@ const slice = createSlice({
       state.slotData.category = action.payload.category;
       state.slotData.editFile = action.payload.editFile;
     },
+
+    updateAllUserstoEmpty(state, action) {
+      state.all_users = [];
+    },
+
+    addFriend(state, action) {
+      state.user = action.payload.user;
+    },
+
+    getFriends(state, action) {
+      state.friends = action.payload.friends;
+    },
   },
 });
 
 export default slice.reducer;
 
+// export function AddFriend(friend) {
+//   return async (dispach, getState) => {
+//     dispach(slice.actions.addFriend({ friend: friend }));
+//   };
+// }
+
+export function AddFriend(friend) {
+  return async (dispatch, getState) => {
+    await axios
+      .post(
+        "/hc/chats/add-friend",
+        {
+          friend: friend,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${getState().auth.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then(function (response) {
+        // console.log(response);
+        const updatedUser = response.data.data;
+        dispatch(slice.actions.addFriend({ user: updatedUser }));
+        dispatch(
+          ShowSnackbar({ severity: "success", message: response.data.message })
+        );
+      })
+      .catch(function (error) {
+        // console.log("hiii", error);
+        dispatch(ShowSnackbar({ severity: "error", message: error.message }));
+      });
+  };
+}
+
 export function UpdateSlotData(formValues) {
   return async (dispach, getState) => {
     dispach(slice.actions.updateSlotData(formValues));
+  };
+}
+
+export function UpdateAllUserstoEmpty() {
+  return async (dispach, getState) => {
+    dispach(slice.actions.updateAllUserstoEmpty());
   };
 }
 
@@ -280,6 +339,27 @@ export const FetchUserProfile = () => {
       .then((response) => {
         // console.log(response);
         dispatch(slice.actions.fetchUser({ user: response.data.data }));
+      })
+      .catch((err) => {
+        // console.log(err);
+      });
+  };
+};
+
+export const FetchAllUsers = () => {
+  return async (dispatch, getState) => {
+    axios
+      .get("/hc/get-all-users", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().auth.token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        dispatch(
+          slice.actions.fetchAllUsers({ all_users: response.data.data })
+        );
       })
       .catch((err) => {
         // console.log(err);

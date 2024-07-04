@@ -214,3 +214,7 @@ input.text {
   text-decoration: none;
   color: black;
 }
+
+.simplebar-wrapper {
+  height: 500px;
+}

@@ -14,89 +14,120 @@ import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
 import ChatConversation from "../../components/ChatConversation";
 import ChatElement from "../../components/ChatElement";
+import AddFriendDialog from "../../components/AddFriendDialog";
+import { useDispatch } from "react-redux";
+import { FetchAllUsers } from "../../redux/slices/app";
+
 function Chats() {
   const [search, setSearch] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
+  const dispach = useDispatch();
+
+  const handleOpenDialog = () => {
+    try {
+      dispach(FetchAllUsers());
+    } catch (err) {
+      console.log(err);
+    }
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
   return (
-    <Stack alignItems={"center"} justifyContent={"center"} height={500}>
-      <Box
-        sx={{
-          width: "60%",
-          height: "90%",
-          border: 1,
-          borderColor: "cadetblue",
-          borderRadius: 2,
-          backgroundColor: "white",
-        }}
-      >
-        <Stack direction={"row"} sx={{ height: "100%", width: "100%" }}>
-          <Box
-            p={2}
-            sx={{
-              width: "25%",
-              height: "100%",
-              borderTopLeftRadius: 7.2,
-              borderBottomLeftRadius: 7.2,
-              backgroundColor: "#ecf0f1",
-              borderRight: "1px solid rgba(189, 195, 199,1.0)",
-            }}
-          >
-            <Stack spacing={2} sx={{ height: "100%" }}>
-              <Stack
-                direction={"row"}
-                justifyContent={"space-between"}
-                alignItems={"center"}
-              >
-                <Typography variant="h6">Chats</Typography>
-                <IconButton>
-                  <AddCommentIcon />
-                </IconButton>
+    <>
+      <Stack alignItems={"center"} justifyContent={"center"} height={500}>
+        <Box
+          sx={{
+            width: "60%",
+            height: "90%",
+            border: 1,
+            borderColor: "cadetblue",
+            borderRadius: 2,
+            backgroundColor: "white",
+          }}
+        >
+          <Stack direction={"row"} sx={{ height: "100%", width: "100%" }}>
+            <Box
+              p={2}
+              sx={{
+                width: "25%",
+                height: "100%",
+                borderTopLeftRadius: 7.2,
+                borderBottomLeftRadius: 7.2,
+                backgroundColor: "#ecf0f1",
+                borderRight: "1px solid rgba(189, 195, 199,1.0)",
+              }}
+            >
+              <Stack spacing={2} sx={{ height: "100%" }}>
+                <Stack
+                  direction={"row"}
+                  justifyContent={"space-between"}
+                  alignItems={"center"}
+                >
+                  <Typography variant="h6">Chats</Typography>
+                  <IconButton
+                    onClick={() => {
+                      handleOpenDialog();
+                    }}
+                  >
+                    <AddCommentIcon />
+                  </IconButton>
+                </Stack>
+                <div className="search">
+                  <TextField
+                    id="standard-basic"
+                    variant="standard"
+                    placeholder="Search..."
+                    onChange={(event) => {
+                      setSearch(event.target.value);
+                    }}
+                    sx={{
+                      "& .MuiInputBase-root": {
+                        height: 25,
+                      },
+                      "& .MuiInput-underline:after": {
+                        borderBottomColor: "cadetblue",
+                      },
+                    }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </div>
+                <Stack direction={"column"} sx={{ flexGrow: 1, height: "79%" }}>
+                  <SimpleBar style={{ maxHeight: "100%" }}>
+                    <Stack spacing={2}>
+                      {ChatList.filter((chat) => {
+                        return search.toLowerCase() === ""
+                          ? chat
+                          : chat.name
+                              .toLowerCase()
+                              .includes(search.toLowerCase());
+                      }).map((chat) => {
+                        return <ChatElement key={chat.id} {...chat} />;
+                      })}
+                    </Stack>
+                  </SimpleBar>
+                </Stack>
               </Stack>
-              <div className="search">
-                <TextField
-                  id="standard-basic"
-                  variant="standard"
-                  placeholder="Search..."
-                  onChange={(event) => {
-                    setSearch(event.target.value);
-                  }}
-                  sx={{
-                    "& .MuiInputBase-root": {
-                      height: 25,
-                    },
-                    "& .MuiInput-underline:after": {
-                      borderBottomColor: "cadetblue",
-                    },
-                  }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </div>
-              <Stack direction={"column"} sx={{ flexGrow: 1, height: "79%" }}>
-                <SimpleBar style={{ maxHeight: "100%" }}>
-                  <Stack spacing={2}>
-                    {ChatList.filter((chat) => {
-                      return search.toLowerCase() === ""
-                        ? chat
-                        : chat.name
-                            .toLowerCase()
-                            .includes(search.toLowerCase());
-                    }).map((chat) => {
-                      return <ChatElement key={chat.id} {...chat} />;
-                    })}
-                  </Stack>
-                </SimpleBar>
-              </Stack>
-            </Stack>
-          </Box>
-          <ChatConversation />
-        </Stack>
-      </Box>
-    </Stack>
+            </Box>
+            <ChatConversation />
+          </Stack>
+        </Box>
+      </Stack>
+      {openDialog && (
+        <AddFriendDialog
+          open={openDialog}
+          handleCloseDialog={handleCloseDialog}
+        />
+      )}
+    </>
   );
 }
 

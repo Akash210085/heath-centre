@@ -134,7 +134,7 @@ function ChatFooter() {
         >
           <Picker data={data} theme={"light"} onEmojiSelect={console.log} />
         </Box>
-        <ChatInput SetOpenPicker={SetOpenPicker} />
+        <ChatInput SetOpenPicker={SetOpenPicker} key={0} />
       </Stack>
     </Box>
   );

@@ -187,22 +187,22 @@ function Message() {
   return (
     <Box pl={2} pr={2} sx={{ height: "100%" }}>
       <Stack spacing={3}>
-        {Chat_History.map((el) => {
+        {Chat_History.map((el, index) => {
           switch (el.type) {
             case "divider":
-              return <Timeline el={el} />;
+              return <Timeline el={el} key={index} />;
             case "msg":
               switch (el.subtype) {
                 case "img":
-                  return <ImgMsg el={el} />;
+                  return <ImgMsg el={el} key={index} />;
                 case "doc":
-                  return <DocMsg el={el} />;
+                  return <DocMsg el={el} key={index} />;
                 case "link":
-                  return <LinkMsg el={el} />;
+                  return <LinkMsg el={el} key={index} />;
                 case "reply":
-                  return <ReplyMsg el={el} />;
+                  return <ReplyMsg el={el} key={index} />;
                 default:
-                  return <TextMsg el={el} />;
+                  return <TextMsg el={el} key={index} />;
               }
             default:
               return "";
