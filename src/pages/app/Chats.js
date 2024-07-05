@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Stack,
@@ -16,15 +16,46 @@ import ChatConversation from "../../components/ChatConversation";
 import ChatElement from "../../components/ChatElement";
 import AddFriendDialog from "../../components/AddFriendDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { FetchAllUsers } from "../../redux/slices/app";
+import {
+  FetchAllUsers,
+  getMyFriends,
+  UpdateFriendStatus,
+} from "../../redux/slices/app";
 import Nochat from "../../assets/illestration/Nochat";
+import { socket } from "../../socket";
 // import Img from "../../assets/images/Messages-pana.svg";
 function Chats() {
   const [search, setSearch] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const dispatch = useDispatch();
-  const myFriendsData = useSelector((state) => state.app.friends);
+  let myFriendsData = useSelector((state) => state.app.friends);
   const { selected_id } = useSelector((state) => state.app);
+  const { user_id } = useSelector((state) => state.auth);
+
+  if (!myFriendsData) {
+    myFriendsData = [];
+  }
+  useEffect(() => {
+    try {
+      socket.emit("request_toget_myfriends", {
+        id: user_id,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+
+    socket.on("friends_data_sent", (data) => {
+      dispatch(getMyFriends(data.data));
+    });
+
+    socket.on("online_status", (data) => {
+      const online_friend_id = data.id;
+      dispatch(
+        UpdateFriendStatus({ id: online_friend_id, status: data.status })
+      );
+    });
+  }, [dispatch, user_id]);
+
   const handleOpenDialog = () => {
     try {
       dispatch(FetchAllUsers());

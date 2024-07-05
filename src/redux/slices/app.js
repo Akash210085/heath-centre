@@ -123,6 +123,17 @@ const slice = createSlice({
     selectConversation(state, action) {
       state.selected_id = action.payload.selected_id;
     },
+
+    updateFriendStatus(state, action) {
+      const friends = state.friends;
+      const { id, status } = action.payload;
+
+      // Find the friend with the matching ID and update their status
+      const friendIndex = friends.findIndex((friend) => friend._id === id);
+      if (friendIndex !== -1) {
+        state.friends[friendIndex].status = status;
+      }
+    },
   },
 });
 
@@ -133,6 +144,14 @@ export default slice.reducer;
 //     dispach(slice.actions.addFriend({ friend: friend }));
 //   };
 // }
+
+export const UpdateFriendStatus = (data) => {
+  return async (dispatch, getState) => {
+    dispatch(
+      slice.actions.updateFriendStatus({ id: data.id, status: data.status })
+    );
+  };
+};
 
 export const SelectConversation = ({ selected_id }) => {
   return async (dispatch, getState) => {
