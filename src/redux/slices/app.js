@@ -17,6 +17,7 @@ const initialState = {
   allSlotData: [],
   all_users: [],
   friends: [],
+  selected_id: null,
 };
 //   users: [], // all users of app who are not friends and not requested yet
 //   all_users: [],
@@ -71,6 +72,8 @@ const slice = createSlice({
       state.appointments = [];
       state.user = {};
       state.allSlotData = [];
+      state.friends = [];
+      state.selected_id = null;
     },
     fetchAllSlots(state, action) {
       state.allSlotData = action.payload.allSlotData;
@@ -113,8 +116,12 @@ const slice = createSlice({
       state.user = action.payload.user;
     },
 
-    getFriends(state, action) {
+    getmyFriends(state, action) {
       state.friends = action.payload.friends;
+    },
+
+    selectConversation(state, action) {
+      state.selected_id = action.payload.selected_id;
     },
   },
 });
@@ -126,6 +133,31 @@ export default slice.reducer;
 //     dispach(slice.actions.addFriend({ friend: friend }));
 //   };
 // }
+
+export const SelectConversation = ({ selected_id }) => {
+  return async (dispatch, getState) => {
+    dispatch(slice.actions.selectConversation({ selected_id }));
+  };
+};
+
+export function getMyFriends() {
+  return async (dispatch, getState) => {
+    axios
+      .get("/hc/chats/get-my-friends", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().auth.token}`,
+        },
+      })
+      .then((response) => {
+        console.log("getmyfriends", response.data.data);
+        dispatch(slice.actions.getmyFriends({ friends: response.data.data }));
+      })
+      .catch((err) => {
+        // console.log(err);
+      });
+  };
+}
 
 export function AddFriend(friend) {
   return async (dispatch, getState) => {

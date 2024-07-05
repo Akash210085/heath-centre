@@ -9,7 +9,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
 import { LogoutUser } from "../../redux/slices/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { EraseDataOnLogout } from "../../redux/slices/app";
+import { EraseDataOnLogout, getMyFriends } from "../../redux/slices/app";
 import { socket } from "../../socket";
 export default function IconTabs(props) {
   const [value, setValue] = React.useState(0);
@@ -49,6 +49,11 @@ export default function IconTabs(props) {
   }
 
   function handleChatClick() {
+    try {
+      dispatch(getMyFriends());
+    } catch (err) {
+      console.log(err);
+    }
     navigate("/hc/chats");
   }
   return (

@@ -9,23 +9,25 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AddCommentIcon from "@mui/icons-material/AddComment";
-import { ChatList } from "../../Data";
+// import { ChatList } from "../../Data";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
 import ChatConversation from "../../components/ChatConversation";
 import ChatElement from "../../components/ChatElement";
 import AddFriendDialog from "../../components/AddFriendDialog";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FetchAllUsers } from "../../redux/slices/app";
-
+import Nochat from "../../assets/illestration/Nochat";
+// import Img from "../../assets/images/Messages-pana.svg";
 function Chats() {
   const [search, setSearch] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
-  const dispach = useDispatch();
-
+  const dispatch = useDispatch();
+  const myFriendsData = useSelector((state) => state.app.friends);
+  const { selected_id } = useSelector((state) => state.app);
   const handleOpenDialog = () => {
     try {
-      dispach(FetchAllUsers());
+      dispatch(FetchAllUsers());
     } catch (err) {
       console.log(err);
     }
@@ -103,21 +105,50 @@ function Chats() {
                 <Stack direction={"column"} sx={{ flexGrow: 1, height: "79%" }}>
                   <SimpleBar style={{ maxHeight: "100%" }}>
                     <Stack spacing={2}>
-                      {ChatList.filter((chat) => {
-                        return search.toLowerCase() === ""
-                          ? chat
-                          : chat.name
-                              .toLowerCase()
-                              .includes(search.toLowerCase());
-                      }).map((chat) => {
-                        return <ChatElement key={chat.id} {...chat} />;
-                      })}
+                      {myFriendsData
+                        .filter((friend) => {
+                          return search.toLowerCase() === ""
+                            ? friend
+                            : friend.name
+                                .toLowerCase()
+                                .includes(search.toLowerCase());
+                        })
+                        .map((friend) => {
+                          return (
+                            <ChatElement
+                              key={friend._id}
+                              _id={friend._id}
+                              status={friend.status}
+                              name={friend.name}
+                              socket_id={friend.socket_id}
+                            />
+                          );
+                        })}
                     </Stack>
                   </SimpleBar>
                 </Stack>
               </Stack>
             </Box>
-            <ChatConversation />
+            {selected_id !== null ? (
+              <ChatConversation />
+            ) : (
+              <Stack
+                sx={{
+                  height: "100%",
+                  width: "75%",
+                  backgroundColor: "#ecf0f1",
+                }}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
+                <Nochat />
+                <Box sx={{ position: "relative", bottom: 150 }}>
+                  <Typography variant="subtitle2">
+                    Select a conversation or start a new one
+                  </Typography>
+                </Box>
+              </Stack>
+            )}
           </Stack>
         </Box>
       </Stack>

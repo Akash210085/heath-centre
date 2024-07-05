@@ -1,6 +1,9 @@
 import React from "react";
 import { Box, Stack, Avatar, Typography, Badge } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { faker } from "@faker-js/faker";
+import { useDispatch, useSelector } from "react-redux";
+import { SelectConversation } from "../redux/slices/app";
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
     backgroundColor: "#44b700",
@@ -30,15 +33,24 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     },
   },
 }));
-function ChatElement({ id, img, name, msg, time, unread, pinned, online }) {
+// msg, time, unread, pinned, online;
+function ChatElement(props) {
+  const msg = faker.music.songName();
   const shortMsg = msg.substr(0, 10) + "...";
+  const img = faker.image.avatar();
+  const time = "9:36";
+  const dispatch = useDispatch();
+  const { selected_id } = useSelector((state) => state.app);
   return (
     <Box
       p={1}
       sx={{
         width: "100%",
         borderRadius: 2,
-        backgroundColor: "#fff",
+        backgroundColor: selected_id === props._id ? "cadetblue" : "#fff",
+      }}
+      onClick={() => {
+        dispatch(SelectConversation({ selected_id: props._id }));
       }}
     >
       <Stack
@@ -47,7 +59,7 @@ function ChatElement({ id, img, name, msg, time, unread, pinned, online }) {
         justifyContent={"space-between"}
       >
         <Stack spacing={2} direction={"row"} alignItems={"center"}>
-          {online ? (
+          {props.status === "Online" ? (
             <StyledBadge
               overlap="circular"
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
@@ -61,30 +73,30 @@ function ChatElement({ id, img, name, msg, time, unread, pinned, online }) {
           )}
 
           <Stack>
-            <Typography variant="subtitle2" fontSize={14}>
-              {name}
+            <Typography
+              variant="subtitle2"
+              fontSize={14}
+              color={selected_id === props._id && "#fff"}
+            >
+              {props.name}
             </Typography>
-            <Typography variant="caption" fontSize={11}>
+            <Typography
+              variant="caption"
+              fontSize={11}
+              color={selected_id === props._id && "#fff"}
+            >
               {shortMsg}
             </Typography>
           </Stack>
         </Stack>
         <Stack spacing={1} alignItems={"center"}>
-          <Typography variant="caption" fontWeight={600}>
+          <Typography
+            variant="caption"
+            fontWeight={600}
+            color={props.SelectedId === props._id && "#fff"}
+          >
             {time}
           </Typography>
-          <Badge
-            badgeContent={unread}
-            color="primary"
-            sx={{
-              "& .MuiBadge-badge": {
-                fontSize: 9,
-                height: 15,
-                minWidth: 1,
-                width: 15,
-              },
-            }}
-          ></Badge>
         </Stack>
       </Stack>
     </Box>

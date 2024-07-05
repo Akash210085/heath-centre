@@ -22,7 +22,7 @@ function ChatConversation() {
             height: "80%",
             width: "100%",
             backgroundImage:
-              '  url("https://www.transparenttextures.com/patterns/ravenna.png");',
+              'url("https://www.transparenttextures.com/patterns/ravenna.png");',
           }}
         >
           <SimpleBar style={{ maxHeight: "100%" }}>
