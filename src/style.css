@@ -216,9 +216,5 @@ input.text {
 }
 
 .simplebar-wrapper {
-  height: 500px;
+  height: 360px;
 }
-
-/* .nochat {
-  background-image: url("../src/assets/images/Messages-pana.svg");
-} */

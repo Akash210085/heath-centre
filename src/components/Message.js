@@ -6,12 +6,32 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 // import { Chat_History } from "../Data";
 import { DownloadSimple, Image } from "@phosphor-icons/react";
 import { useSelector } from "react-redux";
 
 const Timeline = ({ el }) => {
+  const isToday = (date) => {
+    const today = new Date();
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
+  };
+
+  let label;
+  const dateInMillis = parseInt(el.text, 10); // Convert the string to an integer
+  const date = new Date(dateInMillis);
+  if (isToday(date)) {
+    label = "Today";
+  } else {
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Months are zero-based, so add 1
+    const year = date.getFullYear();
+    label = `${day}-${month}-${year}`;
+  }
   return (
     <Stack
       direction={"row"}
@@ -19,7 +39,7 @@ const Timeline = ({ el }) => {
       justifyContent={"space-between"}
     >
       <Divider sx={{ width: "46%" }} />
-      <Typography variant="caption">{el.text}</Typography>
+      <Typography variant="caption">{label}</Typography>
       <Divider sx={{ width: "46%" }} />
     </Stack>
   );
@@ -186,12 +206,23 @@ const DocMsg = ({ el }) => {
 
 function Message() {
   const { conversations } = useSelector((state) => state.app);
+
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [conversations]);
+
   return (
     <Box pl={2} pr={2} sx={{ height: "100%" }}>
       <Stack spacing={3}>
         {conversations.map((el, index) => {
           switch (el.type) {
-            case "divider":
+            case "Divider":
               return <Timeline el={el} key={index} />;
             case "Text":
               switch (el.type) {
@@ -210,6 +241,7 @@ function Message() {
               return "";
           }
         })}
+        <div ref={messagesEndRef} />
       </Stack>
     </Box>
   );

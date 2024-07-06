@@ -254,6 +254,7 @@ export function AddFriend(friend) {
       .then(function (response) {
         // console.log(response);
         const updatedUser = response.data.data;
+        console.log(updatedUser);
         dispatch(slice.actions.addFriend({ user: updatedUser }));
         dispatch(
           ShowSnackbar({ severity: "success", message: response.data.message })

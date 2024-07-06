@@ -35,7 +35,7 @@ function DashboardLayout() {
 
     socket.on("new_appointment_request", (data) => {
       dispatch(PushNewAppointment(data.data));
-      // console.log("recieved new Appointment", data.data);
+      console.log("recieved new Appointment", data.data);
       dispatch(
         ShowSnackbar({
           severity: "success",
