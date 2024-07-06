@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Box, Stack, IconButton, Fab, Tooltip, TextField } from "@mui/material";
 import {
   Smiley,
@@ -10,8 +10,11 @@ import {
   File,
   User,
 } from "@phosphor-icons/react";
-import data from "@emoji-mart/data";
+import emojiAppleData from "@emoji-mart/data/sets/15/apple.json";
 import Picker from "@emoji-mart/react";
+// import emojiAppleData from "emoji-datasource-apple";
+import { socket } from "../../socket";
+import { useSelector } from "react-redux";
 
 const Actions = [
   {
@@ -45,8 +48,20 @@ const Actions = [
     title: "Contact",
   },
 ];
+
 const ChatInput = (props) => {
   const [openAction, SetOpenAction] = useState(false);
+
+  const { selected_id, user } = useSelector((state) => state.app);
+  function handleSend() {
+    socket.emit("send_message", {
+      from: user._id,
+      to: selected_id,
+      text: props.text,
+      type: "Text",
+    });
+    props.setText("");
+  }
   return (
     <Stack
       direction={"row"}
@@ -55,9 +70,6 @@ const ChatInput = (props) => {
     >
       <IconButton
         onClick={() => {
-          props.SetOpenPicker((preValue) => !preValue);
-        }}
-        onBlur={() => {
           props.SetOpenPicker((preValue) => !preValue);
         }}
       >
@@ -101,11 +113,24 @@ const ChatInput = (props) => {
         placeholder="Type a message"
         fullWidth
         variant="standard"
+        value={props.text}
+        onChange={(event) => {
+          props.setText(event.target.value);
+        }}
         InputProps={{
           disableUnderline: true,
         }}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" && props.text !== "") {
+            handleSend();
+          }
+        }}
       />
-      <IconButton>
+      <IconButton
+        onClick={() => {
+          if (props.text !== "") handleSend();
+        }}
+      >
         <PaperPlaneRight />
       </IconButton>
     </Stack>
@@ -113,6 +138,32 @@ const ChatInput = (props) => {
 };
 function ChatFooter() {
   const [openPicker, SetOpenPicker] = useState(false);
+  const [text, setText] = useState("");
+  const pickerRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (pickerRef.current && !pickerRef.current.contains(event.target)) {
+        SetOpenPicker(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleEmojiSelect = (e) => {
+    console.log(e); // Log the emoji object to debug
+    // let sym = e.unified.split("-");
+    // let codesArray = [];
+    // sym.forEach((el) => codesArray.push("0x" + el));
+    // let emoji = String.fromCodePoint(...codesArray);
+    setText((prevText) => prevText + e.native);
+  };
+
   return (
     <Box
       /* footer */
@@ -126,15 +177,27 @@ function ChatFooter() {
     >
       <Stack>
         <Box
-          display={openPicker ? "inline" : "none"}
           zIndex={10}
           position={"fixed"}
           bottom={150}
           left={350}
+          ref={pickerRef}
         >
-          <Picker data={data} theme={"light"} onEmojiSelect={console.log} />
+          {openPicker && (
+            <Picker
+              data={emojiAppleData} // Provide the correct data for the Picker
+              theme="light"
+              onEmojiSelect={handleEmojiSelect}
+              set="apple"
+            />
+          )}
         </Box>
-        <ChatInput SetOpenPicker={SetOpenPicker} key={0} />
+        <ChatInput
+          SetOpenPicker={SetOpenPicker}
+          key={0}
+          text={text}
+          setText={setText}
+        />
       </Stack>
     </Box>
   );

@@ -18,6 +18,7 @@ const initialState = {
   all_users: [],
   friends: [],
   selected_id: null,
+  conversations: [],
 };
 //   users: [], // all users of app who are not friends and not requested yet
 //   all_users: [],
@@ -134,6 +135,43 @@ const slice = createSlice({
         state.friends[friendIndex].status = status;
       }
     },
+
+    getConversations(state, action) {
+      let sent = action.payload.sent;
+      let received = action.payload.received;
+
+      console.log(sent, received);
+      if (!sent) {
+        sent = [];
+      }
+      if (!received) {
+        received = [];
+      }
+
+      const processedSent = sent.map((message) => ({
+        ...message,
+        incoming: false,
+        outgoing: true,
+      }));
+
+      const processedReceived = received.map((message) => ({
+        ...message,
+        incoming: true,
+        outgoing: false,
+      }));
+
+      const allMessages = [...processedSent, ...processedReceived];
+
+      allMessages.sort(
+        (a, b) => new Date(a.created_at) - new Date(b.created_at)
+      );
+      console.log(allMessages);
+      state.conversations = allMessages;
+    },
+
+    addConversation(state, action) {
+      state.conversations.push(action.payload);
+    },
   },
 });
 
@@ -144,6 +182,26 @@ export default slice.reducer;
 //     dispach(slice.actions.addFriend({ friend: friend }));
 //   };
 // }
+
+export const AddConversation = (conversation) => {
+  return async (dispatch, getState) => {
+    // console.log(conversation._doc);
+    dispatch(slice.actions.addConversation(conversation));
+  };
+};
+
+export const UpdatedUser = (user) => {
+  return async (dispatch, getState) => {
+    dispatch(slice.actions.updateUser(user));
+  };
+};
+
+export const GetConversations = (data) => {
+  return async (dispatch, getState) => {
+    console.log(data);
+    dispatch(slice.actions.getConversations(data));
+  };
+};
 
 export const UpdateFriendStatus = (data) => {
   return async (dispatch, getState) => {

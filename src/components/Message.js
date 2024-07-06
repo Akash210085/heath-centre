@@ -7,8 +7,9 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { Chat_History } from "../Data";
+// import { Chat_History } from "../Data";
 import { DownloadSimple, Image } from "@phosphor-icons/react";
+import { useSelector } from "react-redux";
 
 const Timeline = ({ el }) => {
   return (
@@ -36,7 +37,7 @@ const TextMsg = ({ el }) => {
         }}
       >
         <Typography variant="body2" color={!el.incoming && "#fff"}>
-          {el.message}
+          {el.text}
         </Typography>
       </Box>
     </Stack>
@@ -184,15 +185,16 @@ const DocMsg = ({ el }) => {
 };
 
 function Message() {
+  const { conversations } = useSelector((state) => state.app);
   return (
     <Box pl={2} pr={2} sx={{ height: "100%" }}>
       <Stack spacing={3}>
-        {Chat_History.map((el, index) => {
+        {conversations.map((el, index) => {
           switch (el.type) {
             case "divider":
               return <Timeline el={el} key={index} />;
-            case "msg":
-              switch (el.subtype) {
+            case "Text":
+              switch (el.type) {
                 case "img":
                   return <ImgMsg el={el} key={index} />;
                 case "doc":

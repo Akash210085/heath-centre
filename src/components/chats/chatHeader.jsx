@@ -10,6 +10,7 @@ import {
 import { styled } from "@mui/material/styles";
 import { faker } from "@faker-js/faker";
 import SearchIcon from "@mui/icons-material/Search";
+import { useSelector } from "react-redux";
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
     backgroundColor: "#44b700",
@@ -40,6 +41,14 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 function ChatHeader() {
+  const { selected_id, friends } = useSelector((state) => state.app);
+  const index = friends.findIndex((friend) => {
+    return friend._id === selected_id;
+  });
+  let my_friend;
+  if (index !== -1) {
+    my_friend = friends[index];
+  }
   return (
     <Box
       // header
@@ -59,25 +68,34 @@ function ChatHeader() {
         alignItems={"center"}
         sx={{ height: "100%", width: "100%" }}
       >
-        <Stack direction={"row"} alignItems={"center"} spacing={1}>
-          <StyledBadge
-            overlap="circular"
-            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-            variant="dot"
-            sx={{ width: 30, height: 30 }}
-          >
+        <Stack direction={"row"} alignItems={"center"} spacing={2}>
+          {my_friend.status === "Online" ? (
+            <StyledBadge
+              overlap="circular"
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              variant="dot"
+              sx={{ width: 30, height: 30 }}
+            >
+              <Avatar
+                sx={{ width: 30, height: 30 }}
+                src={faker.image.avatar()}
+                alt={faker.person.fullName()}
+              />
+            </StyledBadge>
+          ) : (
             <Avatar
               sx={{ width: 30, height: 30 }}
               src={faker.image.avatar()}
               alt={faker.person.fullName()}
             />
-          </StyledBadge>
-          <Stack alignItems={"center"} spacing={0.1}>
-            <Typography variant="subtitle2" fontSize={10}>
-              Shorya
+          )}
+
+          <Stack alignItems={"start"} spacing={0.1}>
+            <Typography variant="title" fontSize={10}>
+              {my_friend.name}
             </Typography>
             <Typography variant="caption" fontSize={8}>
-              Online
+              {my_friend.status}
             </Typography>
           </Stack>
         </Stack>

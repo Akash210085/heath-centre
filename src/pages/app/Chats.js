@@ -17,8 +17,11 @@ import ChatElement from "../../components/ChatElement";
 import AddFriendDialog from "../../components/AddFriendDialog";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  AddConversation,
   FetchAllUsers,
+  GetConversations,
   getMyFriends,
+  UpdatedUser,
   UpdateFriendStatus,
 } from "../../redux/slices/app";
 import Nochat from "../../assets/illestration/Nochat";
@@ -44,6 +47,19 @@ function Chats() {
       console.log(err);
     }
 
+    socket.emit(
+      "get_conversations",
+      { id: user_id, friend_id: selected_id },
+      (data) => {
+        // console.log(data);
+        dispatch(GetConversations(data));
+      }
+    );
+
+    socket.on("new_friend_added", (updated_user) => {
+      dispatch(UpdatedUser(updated_user));
+    });
+
     socket.on("friends_data_sent", (data) => {
       dispatch(getMyFriends(data.data));
     });
@@ -54,7 +70,20 @@ function Chats() {
         UpdateFriendStatus({ id: online_friend_id, status: data.status })
       );
     });
-  }, [dispatch, user_id]);
+
+    socket.on("got_new_message", (data) => {
+      // add new message into conversations
+      // console.log("got new messages", data.data);
+      dispatch(AddConversation(data.data));
+    });
+
+    return () => {
+      socket?.off("new_friend_added");
+      socket?.off("friends_data_sent");
+      socket?.off("online_status");
+      socket?.off("got_new_message");
+    };
+  }, [dispatch, user_id, selected_id]);
 
   const handleOpenDialog = () => {
     try {
