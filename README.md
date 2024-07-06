@@ -1,70 +1,33 @@
-# Getting Started with Create React App
+# Health Center Management Web App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+This project is intented for iitk students to appoint their appointment on web. this app is user friendly, they can choose slots, specific dotor, for their specific health related issues. On the other hand doctors immedialty get notified to new appointments.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- Students can easily send request to doctors for their appointment
+- Students can choose desired slot in which they are available and can also choose specific doctor
+- Once appointment is requested, this process cannot be revert as doctors get notified immedialy
+- One the other hand, doctors get notified and can accept or reject the received request
+- Doctos have to upload their government verified certificate on thier profile to get listed
+- Doctors have to update their working slots or available slots after signup to get listed
+- Doctors can send remark on their dicision, which will immedialty send to student
+- Students and Doctors can interact with each other using chat feature proveded in app
+- All users can Message each other, chat feature is for all users
+  
+## Technologies Used
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Frontend: React, MUI library, Redux, CSS, HTML
+- Backend: NodeJs, ExpressJS, MongoDB, Mongoose, Socket.io
+- Deployment: Vercel
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Acknowledgments
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The resources that i have used
+- youtube playlist: https://www.youtube.com/playlist?list=PLdLUE-L26MMbXYkddCi6Cb1jy5dKczosk
+- Basics of React: Angela Yu Udemy Course
+- MUI website: https://mui.com/
+- React Redux: https://www.youtube.com/watch?v=9boMnm5X9ak&list=PLC3y8-rFHvwheJHvseC3I0HuYI2f46oAK
+- Learn Socket.io: https://www.youtube.com/watch?v=ZKEqqIO7n-k&t=733s
+ 
