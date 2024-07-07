@@ -138,7 +138,7 @@ function CustomToolbar() {
 // ];
 
 export default function Data() {
-  const { appointments, user } = useSelector((state) => state.app);
+  const { user, appointments } = useSelector((state) => state.app);
   const role = user.role;
 
   const columns = [
@@ -327,10 +327,13 @@ export default function Data() {
       ),
   });
 
+  const reversedAppointments = [...appointments].reverse();
+  console.log(reversedAppointments);
+
   return (
     <div className="data">
       <DataGrid
-        rows={appointments}
+        rows={reversedAppointments}
         columns={columns}
         initialState={{
           pagination: {

@@ -45,7 +45,7 @@ function DashboardLayout() {
     });
 
     socket.on("request_sent", (data) => {
-      dispatch(ShowSnackbar({ severity: "success", message: data.message }));
+      dispatch(ShowSnackbar({ severity: data.status, message: data.message }));
     });
 
     socket.on("approve_reject_recieved", (data) => {

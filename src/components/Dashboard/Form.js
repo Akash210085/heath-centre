@@ -172,7 +172,13 @@ function Form() {
                   id="combo-box-demo"
                   options={Allappoinment}
                   onChange={(event, value) => {
-                    const newValue = value.label;
+                    let newValue;
+                    if (value === null) {
+                      newValue = "";
+                    } else {
+                      newValue = value.label;
+                    }
+
                     SetAppointment((preValue) => {
                       return {
                         ...preValue,
@@ -205,9 +211,14 @@ function Form() {
                     width: 300,
                   }}
                   onChange={(event, value) => {
-                    const newValue = value.label;
+                    let newValue;
+                    if (value === null) {
+                      newValue = "";
+                    } else {
+                      newValue = value.label;
+                    }
                     const Data = allSlotData.filter((el) => {
-                      return el.category === value.label;
+                      return el.category === newValue;
                     });
 
                     setFilterData(Data);
@@ -250,11 +261,22 @@ function Form() {
                   onChange={(event, value) => {
                     // console.log(filterData);
                     // console.log(value);
+                    let newValue;
+                    if (value === null) {
+                      newValue = "";
+                    } else {
+                      newValue = value;
+                    }
+
                     const Data = filterData.filter((el) => {
-                      return el.name === value;
+                      return el.name === newValue;
                     });
-                    SetSlots(Data[0].slots);
-                    setDoctorId(Data[0].id);
+                    console.log(filterData, Data);
+                    if (Data.length !== 0) {
+                      SetSlots(Data[0].slots);
+                      setDoctorId(Data[0].id);
+                    }
+
                     SetAppointment((preValue) => {
                       return {
                         ...preValue,
