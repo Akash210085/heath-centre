@@ -1,5 +1,6 @@
 import { Stack } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Heading() {
   return (
@@ -14,9 +15,9 @@ function Heading() {
           <h2>Indian Institute of Technology, Kanpur</h2>
         </Stack>
         <Stack direction={"row"} alignItems={"center"} spacing={4}>
-          <a href="/auth/login">Sign In</a>
-          <a href="/auth/register">Sign Up</a>
-          <a href="/auth/credits">Credits</a>
+          <Link to="/auth/login">Sign In</Link>
+          <Link to="/auth/register">Sign Up</Link>
+          <Link to="/auth/credits">Credits</Link>
         </Stack>
       </Stack>
     </div>

@@ -11,7 +11,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
+import { Link } from "react-router-dom";
 // import axios from "axios";
 // import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -171,7 +171,7 @@ function SignInform() {
             </FormHelperText>
           </FormControl>
           <Stack direction={"row"} alignItems={"center"} justifyContent={"end"}>
-            <a href="/auth/forgot-password">Forgot Password?</a>
+            <Link to="/auth/forgot-password">Sign Up</Link>
           </Stack>
           <ThemeProvider theme={theme}>
             <LoadingButton
@@ -190,7 +190,7 @@ function SignInform() {
 
           <Stack direction={"row"} justifyContent={"space-between"}>
             <p>Don't have an account?</p>
-            <a href="/auth/register">Sign Up</a>
+            <Link to="/auth/register">Sign Up</Link>
           </Stack>
         </Stack>
       </form>
