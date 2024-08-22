@@ -22,6 +22,7 @@ import {
   GetConversations,
   getMyFriends,
   UpdatedUser,
+  UpdateFriendData,
   UpdateFriendStatus,
 } from "../../redux/slices/app";
 import Nochat from "../../assets/illestration/Nochat";
@@ -75,6 +76,10 @@ function Chats() {
       // add new message into conversations
       // console.log("got new messages", data.data);
       dispatch(AddConversation(data.data));
+    });
+
+    socket.on("update_friendData", (data) => {
+      dispatch(UpdateFriendData(data.data));
     });
 
     return () => {
@@ -180,7 +185,7 @@ function Chats() {
                               _id={friend._id}
                               status={friend.status}
                               name={friend.name}
-                              socket_id={friend.socket_id}
+                              lastMessageId={friend.lastMessageId}
                             />
                           );
                         })}

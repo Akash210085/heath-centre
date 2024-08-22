@@ -34,11 +34,35 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 // msg, time, unread, pinned, online;
+
 function ChatElement(props) {
-  const msg = faker.music.songName();
-  const shortMsg = msg.substr(0, 10) + "...";
+  // const msg = faker.music.songName();
+  let shortMsg;
+  if (props.lastMessageId) {
+    if (props.lastMessageId.text.length > 12)
+      shortMsg = props.lastMessageId.text.substr(0, 12) + "...";
+    else {
+      shortMsg = props.lastMessageId.text;
+    }
+  } else {
+    shortMsg = "";
+  }
+
   const img = faker.image.avatar();
-  const time = "9:36";
+  // const time = "9:36";
+  function CovertTime(data) {
+    const date = new Date(data);
+    const hour = date.getHours() % 12;
+    const minutes = date.getMinutes();
+    return `${hour}:${minutes}`;
+  }
+  let time;
+  if (props.lastMessageId) {
+    time = CovertTime(props.lastMessageId.created_at);
+  } else {
+    time = "";
+  }
+
   const dispatch = useDispatch();
   const { selected_id } = useSelector((state) => state.app);
   return (

@@ -172,6 +172,16 @@ const slice = createSlice({
     addConversation(state, action) {
       state.conversations.push(action.payload);
     },
+    updateFriendData(state, action) {
+      const friends = state.friends;
+      const { id, lastMessageId } = action.payload;
+
+      // Find the friend with the matching ID and update their status
+      const friendIndex = friends.findIndex((friend) => friend._id === id);
+      if (friendIndex !== -1) {
+        state.friends[friendIndex].lastMessageId = lastMessageId;
+      }
+    },
   },
 });
 
@@ -182,6 +192,13 @@ export default slice.reducer;
 //     dispach(slice.actions.addFriend({ friend: friend }));
 //   };
 // }
+
+export const UpdateFriendData = (friend) => {
+  return async (dispatch, getState) => {
+    // console.log(conversation._doc);
+    dispatch(slice.actions.updateFriendData(friend));
+  };
+};
 
 export const AddConversation = (conversation) => {
   return async (dispatch, getState) => {
