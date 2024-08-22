@@ -31,46 +31,56 @@ function DashboardLayout() {
         console.log("socket:", socket);
       }
       // connectSocket(user_id);
+
+      socket.on("new_appointment_request", (data) => {
+        dispatch(PushNewAppointment(data.data));
+        console.log("recieved new Appointment", data.data);
+        dispatch(
+          ShowSnackbar({
+            severity: "success",
+            message: data.message,
+          })
+        );
+      });
+
+      socket.on("request_sent", (data) => {
+        dispatch(
+          ShowSnackbar({ severity: data.status, message: data.message })
+        );
+      });
+
+      socket.on("approve_reject_recieved", (data) => {
+        dispatch(UpdateAppointment(data.data));
+
+        dispatch(
+          ShowSnackbar({ severity: data.status, message: data.message })
+        );
+      });
+
+      socket.on("approve_reject_sent", (data) => {
+        dispatch(UpdateAppointment(data.data));
+
+        dispatch(
+          ShowSnackbar({ severity: data.status, message: data.message })
+        );
+      });
+
+      socket.on("remark_sent", (data) => {
+        dispatch(UpdateAppointment(data.data));
+
+        dispatch(
+          ShowSnackbar({ severity: data.status, message: data.message })
+        );
+      });
+
+      socket.on("remark_recieved", (data) => {
+        dispatch(UpdateAppointment(data.data));
+
+        dispatch(
+          ShowSnackbar({ severity: data.status, message: data.message })
+        );
+      });
     }
-
-    socket.on("new_appointment_request", (data) => {
-      dispatch(PushNewAppointment(data.data));
-      console.log("recieved new Appointment", data.data);
-      dispatch(
-        ShowSnackbar({
-          severity: "success",
-          message: data.message,
-        })
-      );
-    });
-
-    socket.on("request_sent", (data) => {
-      dispatch(ShowSnackbar({ severity: data.status, message: data.message }));
-    });
-
-    socket.on("approve_reject_recieved", (data) => {
-      dispatch(UpdateAppointment(data.data));
-
-      dispatch(ShowSnackbar({ severity: data.status, message: data.message }));
-    });
-
-    socket.on("approve_reject_sent", (data) => {
-      dispatch(UpdateAppointment(data.data));
-
-      dispatch(ShowSnackbar({ severity: data.status, message: data.message }));
-    });
-
-    socket.on("remark_sent", (data) => {
-      dispatch(UpdateAppointment(data.data));
-
-      dispatch(ShowSnackbar({ severity: data.status, message: data.message }));
-    });
-
-    socket.on("remark_recieved", (data) => {
-      dispatch(UpdateAppointment(data.data));
-
-      dispatch(ShowSnackbar({ severity: data.status, message: data.message }));
-    });
   }, [isLoggedIn, user_id, dispatch]);
 
   if (!isLoggedIn) {
