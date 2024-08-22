@@ -171,7 +171,7 @@ function SignInform() {
             </FormHelperText>
           </FormControl>
           <Stack direction={"row"} alignItems={"center"} justifyContent={"end"}>
-            <Link to="/auth/forgot-password">Sign Up</Link>
+            <Link to="/auth/forgot-password">Forgot password</Link>
           </Stack>
           <ThemeProvider theme={theme}>
             <LoadingButton
