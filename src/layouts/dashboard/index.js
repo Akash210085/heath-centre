@@ -22,7 +22,7 @@ function DashboardLayout() {
         }
       };
 
-      window.onload();
+      // window.onload();
 
       if (!socket) {
         console.log("userID:", user_id);
