@@ -116,7 +116,6 @@ function Form() {
   async function handleSubmit(event) {
     event.preventDefault();
     //Api call to backend
-    // console.log(appointment);
     try {
       // dispatch(
       //   AddAppoinment({
