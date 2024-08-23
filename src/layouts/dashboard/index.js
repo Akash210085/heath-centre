@@ -15,11 +15,11 @@ function DashboardLayout() {
   const dispatch = useDispatch();
   useEffect(() => {
     if (isLoggedIn) {
-      window.onload = function () {
-        if (!window.location.hash) {
-          window.location.reload();
-        }
-      };
+      // window.onload = function () {
+      //   if (!window.location.hash) {
+      //     window.location.reload();
+      //   }
+      // };
 
       // window.onload();
 
