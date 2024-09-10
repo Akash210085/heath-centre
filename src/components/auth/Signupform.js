@@ -212,7 +212,7 @@ function Signupform(props) {
     e.preventDefault();
     try {
       // submit data to backend
-      dispatch(
+      await dispatch(
         RegisterUser({
           ...student,
           role: role,
