@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import axios from "../../utils/axios";
 import { ShowSnackbar } from "./app";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   isLoggedIn: false,
@@ -103,6 +104,7 @@ export function LogoutUser() {
 }
 
 export function RegisterUser(formValues) {
+  const navigate = useNavigate();
   return async (dispatch, getState) => {
     dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
 
@@ -140,7 +142,7 @@ export function RegisterUser(formValues) {
       })
       .finally(() => {
         if (!getState().auth.error) {
-          window.location.href = "/auth/verify";
+          navigate("/auth/verify");
         }
       });
   };
