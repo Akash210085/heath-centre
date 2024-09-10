@@ -21,6 +21,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RegisterUser, UpdateRole } from "../../redux/slices/auth";
+import { useNavigate } from "react-router-dom";
+
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
@@ -204,6 +206,8 @@ function Signupform(props) {
     });
   }
 
+  const navigate = useNavigate();
+
   async function handleSubmit(e) {
     e.preventDefault();
     try {
@@ -214,6 +218,7 @@ function Signupform(props) {
           role: role,
         })
       );
+      navigate("/auth/verify");
     } catch (error) {
       console.error(error);
     }
