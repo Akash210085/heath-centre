@@ -101,7 +101,7 @@ export function LogoutUser() {
   };
 }
 
-export function RegisterUser(formValues) {
+export function RegisterUser(formValues, navigate) {
   return async (dispatch, getState) => {
     dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
 
@@ -136,12 +136,12 @@ export function RegisterUser(formValues) {
         dispatch(
           slice.actions.updateIsLoading({ error: true, isLoading: false })
         );
+      })
+      .finally(() => {
+        if (!getState().auth.error) {
+          navigate("/auth/verify");
+        }
       });
-    // .finally(() => {
-    //   if (!getState().auth.error) {
-
-    //   }
-    // });
   };
 }
 

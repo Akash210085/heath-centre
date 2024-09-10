@@ -212,13 +212,15 @@ function Signupform(props) {
     e.preventDefault();
     try {
       // submit data to backend
-      await dispatch(
-        RegisterUser({
-          ...student,
-          role: role,
-        })
+      dispatch(
+        RegisterUser(
+          {
+            ...student,
+            role: role,
+          },
+          navigate
+        )
       );
-      navigate("/auth/verify");
     } catch (error) {
       console.error(error);
     }
